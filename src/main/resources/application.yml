@@ -1,0 +1,25 @@
+# 配置日志
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ./logs/${spring.application.name}
+  level:
+    reactor.util: info
+    org.springframework.boot: info
+    io.netty: debug
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: llm-hub
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/llm_hub
+    username: postgres
+    password: 123456
+
+jimmer:
+  language: kotlin
