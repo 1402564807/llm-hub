@@ -38,7 +38,7 @@ class SecurityConfig {
             .cors { it.disable() }
             .logout { it.disable() }
             .httpBasic { it.disable() }
-            .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.FORM_LOGIN)
+            .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHORIZATION)
             .authorizeExchange {
                 // 授权，判断用户是否有权限。
                 it.pathMatchers("/v1/**").access(AuthorizationManager())

@@ -6,7 +6,7 @@ logging:
   level:
     reactor.util: info
     org.springframework.boot: info
-    io.netty: debug
+    org.springframework.security: debug
 
 server:
   port: 8080

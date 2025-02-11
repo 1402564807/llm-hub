@@ -24,12 +24,9 @@ class AuthenticationManager(
 ) : ReactiveAuthenticationManager {
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
 
-        if (authentication !is ApiKeyAuthenticationToken) {
-            return Mono.empty()
-        }
         val authorities = authentication.authorities
         return tokenService.findByUsername(authorities.first().authority)
-            .switchIfEmpty(Mono.error(BadCredentialsException("Token不存在")))
+            .switchIfEmpty(Mono.error(BadCredentialsException("Token 不存在")))
             .map { TokenAuthenticationToken(it) }
     }
 }
