@@ -43,14 +43,6 @@ class SecurityConfig {
                 // 授权，判断用户是否有权限。
                 it.pathMatchers("/v1/**").access(AuthorizationManager())
             }
-//            .formLogin {
-//                it.requiresAuthenticationMatcher(matchers)
-//                // 认证，验证用户身份。
-//                it.authenticationManager(authenticationManager)
-//                it.authenticationEntryPoint(AuthenticationEntryPoint())
-//                it.authenticationSuccessHandler(AuthenticationSuccessHandler())
-//                it.authenticationFailureHandler(AuthenticationFailureHandler())
-//            }
             .authenticationManager(authenticationManager)
             .exceptionHandling {
                 it.accessDeniedHandler(AuthenticationDeniedHandler())

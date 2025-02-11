@@ -19,7 +19,8 @@ class TokenAuthenticationFilter(
         val headers = exchange.request.headers
         val authorization = headers.getFirst(HttpHeaders.AUTHORIZATION)
         log.info("认证Token: {}", authorization)
-        return chain.filter(exchange)
+
+        return super.filter(exchange, chain)
     }
 
 
