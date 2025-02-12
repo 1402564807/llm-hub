@@ -1,9 +1,10 @@
 package com.xermao.llmhub.security.model
 
-data class Stream(
+data class ModelAndStream(
+    val model: String,
     private val stream: Boolean?
 ) {
-    fun isStream(): Boolean {
+    fun stream(): Boolean {
         return stream ?: false
     }
 }

@@ -57,7 +57,7 @@ data class TokenDetail(
     }
 
     override fun isAccountNonExpired(): Boolean {
-        return LocalDateTime.now().isAfter(expiredTime)
+        return LocalDateTime.now().isBefore(expiredTime)
     }
 
     override fun isAccountNonLocked(): Boolean {

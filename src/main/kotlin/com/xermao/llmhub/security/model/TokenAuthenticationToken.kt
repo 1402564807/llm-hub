@@ -1,20 +1,20 @@
 package com.xermao.llmhub.security.model
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
-import org.springframework.security.core.userdetails.UserDetails
 
 data class TokenAuthenticationToken(
-    val details: UserDetails
+    val details: TokenDetail
 ) : AbstractAuthenticationToken(details.authorities) {
+
+    override fun isAuthenticated(): Boolean {
+        return true
+    }
+
     override fun getCredentials(): Any {
-        if (details is TokenDetail)
-            return details.key
-        return details.password
+        return details.key
     }
 
     override fun getPrincipal(): Any {
-        if (details is TokenDetail)
-            return details.name
-        return details.username
+        return details.name
     }
 }

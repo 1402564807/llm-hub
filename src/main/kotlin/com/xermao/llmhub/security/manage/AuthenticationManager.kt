@@ -2,7 +2,10 @@ package com.xermao.llmhub.security.manage
 
 import com.xermao.llmhub.security.model.ApiKeyAuthenticationToken
 import com.xermao.llmhub.security.model.TokenAuthenticationToken
+import com.xermao.llmhub.security.model.TokenDetail
+import org.springframework.security.authentication.AccountExpiredException
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.LockedException
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
@@ -27,6 +30,10 @@ class AuthenticationManager(
         val authorities = authentication.authorities
         return tokenService.findByUsername(authorities.first().authority)
             .switchIfEmpty(Mono.error(BadCredentialsException("Token 不存在")))
-            .map { TokenAuthenticationToken(it) }
+            .filter { it.isAccountNonExpired }
+            .switchIfEmpty(Mono.error(AccountExpiredException("Token 过期")))
+            .filter { it.isAccountNonLocked }
+            .switchIfEmpty(Mono.error(LockedException("Token 已被锁定")))
+            .map { TokenAuthenticationToken(it as TokenDetail) }
     }
 }
