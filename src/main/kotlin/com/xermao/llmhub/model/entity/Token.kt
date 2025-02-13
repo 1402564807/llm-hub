@@ -1,4 +1,4 @@
-package com.xermao.llmhub.model
+package com.xermao.llmhub.model.entity
 
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.GeneratedValue

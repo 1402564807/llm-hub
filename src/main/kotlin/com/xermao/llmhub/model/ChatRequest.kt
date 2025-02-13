@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ChatRequest(
     @JsonProperty("role") val model: String,
-    @JsonProperty("role") val messages: List<Message>,
-    @JsonProperty("role") val stream: Boolean,
+    @JsonProperty("messages") val messages: List<Message>,
+    @JsonProperty("stream") val stream: Boolean,
     @JsonProperty("stream_options") val streamOptions: StreamOptions?,
     @JsonProperty("max_tokens") val maxTokens: Int?,
     @JsonProperty("stop") val stop: List<String>?,

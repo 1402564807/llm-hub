@@ -1,6 +1,6 @@
 package com.xermao.llmhub.security.model
 
-import com.xermao.llmhub.model.Token
+import com.xermao.llmhub.model.entity.Token
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.math.BigDecimal
