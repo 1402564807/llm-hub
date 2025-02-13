@@ -17,7 +17,7 @@ class ChatController(
 
 
     @PostMapping("/chat/completions")
-    fun chat(@RequestBody chatRequest: ChatRequest): Flux<Any> {
+    fun chat(@RequestBody chatRequest: ChatRequest): Flux<out Any> {
         return chatService.chat(chatRequest)
     }
 }

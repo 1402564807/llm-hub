@@ -1,6 +1,7 @@
 package com.xermao.llmhub.config
 
 import com.xermao.llmhub.security.converter.AuthenticationConverter
+import com.xermao.llmhub.security.filter.CacheRequestBodyFilter
 import com.xermao.llmhub.security.filter.TokenAuthenticationFilter
 import com.xermao.llmhub.security.handler.AuthenticationDeniedHandler
 import com.xermao.llmhub.security.handler.AuthenticationEntryPoint
@@ -38,6 +39,7 @@ class SecurityConfig {
             .cors { it.disable() }
             .logout { it.disable() }
             .httpBasic { it.disable() }
+            .addFilterAt(CacheRequestBodyFilter(matchers), SecurityWebFiltersOrder.FIRST)
             .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHORIZATION)
             .authorizeExchange {
                 // 授权，判断用户是否有权限。

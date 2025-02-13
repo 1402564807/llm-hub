@@ -39,24 +39,27 @@ class NettyClient(private val host: String, private val port: Int) {
             .handler(object : ChannelInitializer<Channel>() {
                 override fun initChannel(ch: Channel) {
                     ch.pipeline()
+                        .addLast(LoggingHandler())
                         .addLast(HttpClientCodec())
                         .addLast(HttpObjectAggregator(65536))
                         .addLast(HttpContentDecompressor())
                         .addLast(ClientHandler(sink, request))
-                        .addLast(LoggingHandler())
                 }
             })
+
+
 
         this.channel = bootstrap.connect(host, port).sync().channel()
 
         // 返回 Mono（实际数据在 ClientHandler 中填充）
         return sink.asFlux()
+            .doOnComplete{ shutdown() }
     }
 
     /**
      * 关闭客户端
      */
-    fun shutdown() {
+    private fun shutdown() {
         if (channel != null) {
             channel!!.close()
         }

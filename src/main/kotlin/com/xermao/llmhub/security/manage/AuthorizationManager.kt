@@ -1,11 +1,11 @@
 package com.xermao.llmhub.security.manage
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.xermao.llmhub.security.model.ModelAndStream
 import com.xermao.llmhub.security.model.TokenAuthenticationToken
+import com.xermao.llmhub.utils.JsonUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.http.MediaType
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authorization.AuthorizationDecision
@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.server.authorization.AuthorizationContext
 import org.springframework.security.web.util.matcher.IpAddressMatcher
 import reactor.core.publisher.Mono
-import java.io.ByteArrayOutputStream
 
 /**
  * ReactiveAuthorizationManager
@@ -30,21 +29,17 @@ class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> 
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    private val objectMapper: ObjectMapper = ObjectMapper()
-
     @Deprecated("Deprecated in Java")
     override fun check(
         authentication: Mono<Authentication>,
         authorizationContext: AuthorizationContext
     ): Mono<AuthorizationDecision> {
 
-        val request = authorizationContext.exchange.request
-
         return authentication.handle<TokenAuthenticationToken> { token, sink ->
             if (token !is TokenAuthenticationToken) {
                 return@handle
             }
-            val host = request.uri.host
+            val host = authorizationContext.exchange.request.uri.host
             val isSubnet = token.details.subnet
                 .map { IpAddressMatcher(it) }
                 .any { it.matches(host) }
@@ -54,21 +49,19 @@ class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> 
             }
             sink.next(token)
         }.flatMap { token ->
+            val bufferFlux = authorizationContext.exchange.request.body
 
-            return@flatMap request.body.collectList().map { dataBuffer ->
-                val stream = ByteArrayOutputStream()
-                dataBuffer.map { it.toByteBuffer() }.filter { it.hasArray() }.forEach {
-                    stream.write(it.array())
-                }
-                val modelAndStream = objectMapper.readValue(stream.toByteArray(), ModelAndStream::class.java)
-                authorizationContext.exchange.response.headers.contentType = if (modelAndStream.stream())
-                    MediaType.TEXT_EVENT_STREAM
-                else
-                    MediaType.APPLICATION_JSON
+            val inputStream = DataBufferUtils.subscriberInputStream(bufferFlux, 256)
+            val modelAndStream = JsonUtil.fromJson(inputStream, ModelAndStream::class.java)
 
-                val isSubModel = token.details.models.any { model -> model == modelAndStream.model }
-                return@map AuthorizationDecision(isSubModel or token.details.models.isEmpty())
-            }
+            authorizationContext.exchange.response.headers.contentType = if (modelAndStream.stream())
+                MediaType.TEXT_EVENT_STREAM
+            else
+                MediaType.APPLICATION_JSON
+
+            val isSubModel = token.details.models.any { model -> model == modelAndStream.model }
+            Mono.just(AuthorizationDecision(isSubModel or token.details.models.isEmpty()))
+
         }.defaultIfEmpty(AuthorizationDecision(false))
 
     }

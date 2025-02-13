@@ -7,6 +7,7 @@ logging:
     reactor.util: info
     org.springframework.boot: info
     org.springframework.security: debug
+    org.springframework.web.reactive: debug
 
 server:
   port: 8080
@@ -17,12 +18,14 @@ spring:
       enabled: true
   application:
     name: llm-hub
-
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/llm_hub
     username: postgres
     password: 123456
+  webflux:
+    problemdetails:
+      enabled: true
 
 jimmer:
   language: kotlin
