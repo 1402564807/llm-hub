@@ -8,7 +8,7 @@ data class ChatCompletionChunk(
     @JsonProperty("created") val created: Int?,
     @JsonProperty("object") val obj: String?,
     @JsonProperty("choices") val choices: List<StreamChoice>?,
-    @JsonProperty("usage") val usage: Int?,
+    @JsonProperty("usage") val usage: Usage?,
 ) {
 
     data class StreamChoice(
@@ -21,6 +21,7 @@ data class ChatCompletionChunk(
     data class ChoiceDelta(
         @JsonProperty("role") val role: String?,
         @JsonProperty("content") val content: String?,
+        @JsonProperty("reasoning_content") val reasoningContent: String?,
         @JsonProperty("tool_calls") val toolCalls: List<ChoiceDeltaToolCall>?,
     )
 

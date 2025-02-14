@@ -34,6 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:0.9.50")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
     ksp("org.babyfish.jimmer:jimmer-ksp:0.9.50")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql:42.7.5")

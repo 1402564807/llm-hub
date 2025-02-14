@@ -1,6 +1,5 @@
 package com.xermao.llmhub.security.manage
 
-import com.xermao.llmhub.security.model.ApiKeyAuthenticationToken
 import com.xermao.llmhub.security.model.TokenAuthenticationToken
 import com.xermao.llmhub.security.model.TokenDetail
 import org.springframework.security.authentication.AccountExpiredException

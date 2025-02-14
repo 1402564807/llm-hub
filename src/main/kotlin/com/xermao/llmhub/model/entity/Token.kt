@@ -1,29 +1,26 @@
 package com.xermao.llmhub.model.entity
 
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.GeneratedValue
-import org.babyfish.jimmer.sql.GenerationType
-import org.babyfish.jimmer.sql.Id
-import org.babyfish.jimmer.sql.Key
+import com.xermao.llmhub.model.entity.superclass.Id
+import org.babyfish.jimmer.sql.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-interface Token {
+interface Token : Id {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: String
-
-    val userId: String
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: User
 
     @Key
     val name: String
 
     val key: String
 
+    @Column(sqlElementType = "varchar")
     val subnet: List<String>
 
+    @Column(sqlElementType = "varchar")
     val models: List<String>
 
     val usedQuota: BigDecimal

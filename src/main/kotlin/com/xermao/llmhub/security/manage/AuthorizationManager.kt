@@ -1,5 +1,6 @@
 package com.xermao.llmhub.security.manage
 
+import com.xermao.llmhub.constant.Constant
 import com.xermao.llmhub.security.model.ModelAndStream
 import com.xermao.llmhub.security.model.TokenAuthenticationToken
 import com.xermao.llmhub.utils.JsonUtil
@@ -44,7 +45,7 @@ class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> 
                 .map { IpAddressMatcher(it) }
                 .any { it.matches(host) }
             if (!isSubnet and token.details.subnet.isNotEmpty()) {
-                sink.error(AccessDeniedException("IP 为黑名单地址"))
+                sink.error(AccessDeniedException("您的 IP 不在令牌允许访问的列表中"))
                 return@handle
             }
             sink.next(token)
@@ -60,7 +61,14 @@ class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> 
                 MediaType.APPLICATION_JSON
 
             val isSubModel = token.details.models.any { model -> model == modelAndStream.model }
-            Mono.just(AuthorizationDecision(isSubModel or token.details.models.isEmpty()))
+
+            if (isSubModel or token.details.models.isEmpty()) {
+                return@flatMap Mono.error(AccessDeniedException("该令牌无权访问模型: ${modelAndStream.model}"))
+            }
+
+            authorizationContext.exchange.attributes[Constant.REQUEST_MODEL_NAME] = modelAndStream.model
+
+            Mono.just(AuthorizationDecision(true))
 
         }.defaultIfEmpty(AuthorizationDecision(false))
 

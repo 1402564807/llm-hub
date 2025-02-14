@@ -1,6 +1,7 @@
 package com.xermao.llmhub.security.model
 
 import com.xermao.llmhub.model.entity.Token
+import com.xermao.llmhub.model.entity.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.math.BigDecimal
@@ -8,7 +9,7 @@ import java.time.LocalDateTime
 
 data class TokenDetail(
     val id: String,
-    val userId: String,
+    val user: User,
     val name: String,
     val key: String,
     val subnet: List<String>,
@@ -24,7 +25,7 @@ data class TokenDetail(
 
     constructor(token: Token) : this(
         id = token.id,
-        userId = token.userId,
+        user = token.user,
         name = token.name,
         key = token.key,
         subnet = token.subnet,

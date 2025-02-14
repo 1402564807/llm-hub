@@ -13,4 +13,6 @@ interface ChatModel {
     fun headers(serverWebExchange: ServerWebExchange): Consumer<HttpHeaders>
 
     fun body(chatRequest: ChatRequest): Any
+
+    fun usage(string: String): String
 }

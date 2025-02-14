@@ -28,4 +28,8 @@ class VolcengineChatModel: ChatModel {
     override fun body(chatRequest: ChatRequest): Any {
         return chatRequest
     }
+
+    override fun usage(string: String): String {
+        return string
+    }
 }

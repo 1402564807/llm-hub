@@ -1,7 +1,9 @@
 package com.xermao.llmhub.security.service
 
 import com.xermao.llmhub.model.entity.Token
-import com.xermao.llmhub.model.key
+import com.xermao.llmhub.model.entity.fetchBy
+import com.xermao.llmhub.model.entity.key
+import com.xermao.llmhub.model.entity.user
 import com.xermao.llmhub.security.model.TokenDetail
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -18,7 +20,13 @@ class TokenDetailsServiceImpl(
 
         val tokenDetail = sqlClient.createQuery(Token::class) {
             where(table.key.eq(token))
-            select(table)
+            select(table.fetchBy {
+                allTableFields()
+                user {
+                    allQuota()
+                    usedQuota()
+                }
+            })
         }.fetchOneOrNull() ?: return Mono.empty()
 
         return Mono.just(TokenDetail(tokenDetail))

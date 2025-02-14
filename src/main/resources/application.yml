@@ -8,6 +8,7 @@ logging:
     org.springframework.boot: info
     org.springframework.security: debug
     org.springframework.web.reactive: debug
+    org.babyfish.jimmer: debug
 
 server:
   port: 8080
@@ -29,3 +30,5 @@ spring:
 
 jimmer:
   language: kotlin
+  show-sql: true
+  pretty-sql: true
