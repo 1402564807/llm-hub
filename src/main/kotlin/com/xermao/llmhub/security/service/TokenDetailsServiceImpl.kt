@@ -25,6 +25,7 @@ class TokenDetailsServiceImpl(
                 user {
                     allQuota()
                     usedQuota()
+                    group()
                 }
             })
         }.fetchOneOrNull() ?: return Mono.empty()

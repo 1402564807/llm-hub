@@ -1,12 +1,15 @@
 package com.xermao.llmhub.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ChatRequest(
-    @JsonProperty("role") val model: String,
     @JsonProperty("messages") val messages: List<Message>,
     @JsonProperty("stream") val stream: Boolean,
-    @JsonProperty("stream_options") val streamOptions: StreamOptions?,
+    @JsonProperty("model") var model: String,
+    @JsonProperty("stream_options") var streamOptions: StreamOptions?,
     @JsonProperty("max_tokens") val maxTokens: Int?,
     @JsonProperty("stop") val stop: List<String>?,
     @JsonProperty("frequency_penalty") val frequencyPenalty: Float?,
@@ -20,15 +23,18 @@ data class ChatRequest(
 ) {
 
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class StreamOptions(
         @JsonProperty("include_usage") val includeUsage: Boolean,
     )
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class Tool(
         @JsonProperty("type") val type: String,
         @JsonProperty("function") val function: FunctionDefinition,
     )
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class FunctionDefinition(
         @JsonProperty("name") val name: String,
         @JsonProperty("description") val description: String,

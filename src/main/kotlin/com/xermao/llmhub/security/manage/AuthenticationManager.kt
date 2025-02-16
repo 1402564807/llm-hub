@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono
  * ReactiveAuthenticationManager
  *
  * 职责	认证：验证用户身份是否合法
- * <br>
  * 输入	Authentication 对象（用户名和密码）
  * 输出	包含用户权限的 Authentication 对象
  * 使用场景	登录验证、Token 验证

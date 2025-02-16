@@ -1,14 +1,16 @@
 package com.xermao.llmhub.model.entity
 
-import com.xermao.llmhub.model.entity.superclass.CreatedTime
-import com.xermao.llmhub.model.entity.superclass.Id
-import com.xermao.llmhub.model.entity.superclass.UpdatedTime
+import com.xermao.llmhub.common.domain.model.superclass.CreatedTime
+import com.xermao.llmhub.common.domain.model.superclass.Id
+import com.xermao.llmhub.common.domain.model.superclass.UpdatedTime
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.OneToMany
+import org.babyfish.jimmer.sql.Table
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "\"user\"")
 interface User: Id, CreatedTime, UpdatedTime {
     val username: String
     val password: String

@@ -1,0 +1,8 @@
+export com.xermao.llmhub.user.domain.model.Role
+
+input RolePermissionShortInput {
+    id
+    code
+    name
+    dynamic id(permissions)? as permissionIds
+}

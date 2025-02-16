@@ -1,5 +1,6 @@
 package com.xermao.llmhub.config
 
+import com.xermao.llmhub.cache.GlobalCache
 import com.xermao.llmhub.security.converter.AuthenticationConverter
 import com.xermao.llmhub.security.filter.CacheRequestBodyFilter
 import com.xermao.llmhub.security.filter.ReactiveRequestContextFilter
@@ -27,6 +28,7 @@ class SecurityConfig {
     fun securityWebFilterChain(
         http: ServerHttpSecurity,
         tokenService: TokenDetailsServiceImpl,
+        globalCache: GlobalCache
     ): SecurityWebFilterChain {
         val authenticationManager = AuthenticationManager(tokenService)
         val authenticationFilter = TokenAuthenticationFilter(authenticationManager)
@@ -45,7 +47,7 @@ class SecurityConfig {
             .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHORIZATION)
             .authorizeExchange {
                 // 授权，判断用户是否有权限。
-                it.pathMatchers("/v1/**").access(AuthorizationManager())
+                it.pathMatchers("/v1/**").access(AuthorizationManager(globalCache))
             }
             .authenticationManager(authenticationManager)
             .exceptionHandling {

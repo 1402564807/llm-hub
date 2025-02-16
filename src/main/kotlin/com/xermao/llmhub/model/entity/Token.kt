@@ -1,6 +1,6 @@
 package com.xermao.llmhub.model.entity
 
-import com.xermao.llmhub.model.entity.superclass.Id
+import com.xermao.llmhub.common.domain.model.superclass.Id
 import org.babyfish.jimmer.sql.*
 import java.math.BigDecimal
 import java.time.LocalDateTime

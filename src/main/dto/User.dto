@@ -1,0 +1,18 @@
+export com.xermao.llmhub.user.domain.model.User
+
+UserRolePermissionView {
+    #allScalars(this)
+    id
+    roles {
+        #allScalars(this)
+        permissions {
+             #allScalars(this)
+        }
+    }
+}
+
+input UserRoleShortInput {
+    username
+    password
+    id(roles)? as rolesId
+}

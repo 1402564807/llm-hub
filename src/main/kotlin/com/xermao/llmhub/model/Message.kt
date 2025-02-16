@@ -1,7 +1,9 @@
 package com.xermao.llmhub.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Message(
     @JsonProperty("role") val role: String,
     @JsonProperty("name") val name: String?,
@@ -14,12 +16,14 @@ data class Message(
     @JsonProperty("audio") val audio: String?,
 ) {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class ToolCalls(
         @JsonProperty("id") val id: String,
         @JsonProperty("type") val type: String,
         @JsonProperty("function") val function: Function,
     )
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class Function(
         @JsonProperty("name") val name: String,
         @JsonProperty("arguments") val arguments: String,

@@ -1,7 +1,8 @@
 package com.xermao.llmhub.model.entity
 
-import com.xermao.llmhub.model.entity.superclass.CreatedTime
-import com.xermao.llmhub.model.entity.superclass.Id
+import com.xermao.llmhub.constant.ModelType
+import com.xermao.llmhub.common.domain.model.superclass.CreatedTime
+import com.xermao.llmhub.common.domain.model.superclass.Id
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Serialized
@@ -10,8 +11,9 @@ import java.math.BigDecimal
 @Entity
 interface ServiceProvider : Id, CreatedTime {
 
-    val type: Int
+    val type: ModelType
     val name: String
+    val priority: Int
     val weight: Int
     val key: String
     val baseUrl: String

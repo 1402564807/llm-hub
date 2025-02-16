@@ -1,0 +1,8 @@
+export com.xermao.llmhub.user.domain.model.Permission
+
+
+input PermissionInput {
+    id
+    code
+    name
+}

@@ -1,9 +1,13 @@
 package com.xermao.llmhub.security.manage
 
+import com.xermao.llmhub.cache.GlobalCache
 import com.xermao.llmhub.constant.Constant
+import com.xermao.llmhub.provider.ChatModel
 import com.xermao.llmhub.security.model.ModelAndStream
 import com.xermao.llmhub.security.model.TokenAuthenticationToken
-import com.xermao.llmhub.utils.JsonUtil
+import com.xermao.llmhub.security.utils.ProviderRouter
+import com.xermao.llmhub.common.utils.BeanManager
+import com.xermao.llmhub.common.utils.JsonUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.buffer.DataBufferUtils
@@ -26,7 +30,9 @@ import reactor.core.publisher.Mono
  * 依赖关系	通常依赖用户的权限信息
  * 调用时机	在访问受保护资源时调用
  */
-class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> {
+class AuthorizationManager(
+    private val globalCache: GlobalCache
+) : ReactiveAuthorizationManager<AuthorizationContext> {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -62,11 +68,29 @@ class AuthorizationManager : ReactiveAuthorizationManager<AuthorizationContext> 
 
             val isSubModel = token.details.models.any { model -> model == modelAndStream.model }
 
-            if (isSubModel or token.details.models.isEmpty()) {
+            if (isSubModel and token.details.models.isNotEmpty()) {
                 return@flatMap Mono.error(AccessDeniedException("该令牌无权访问模型: ${modelAndStream.model}"))
             }
 
             authorizationContext.exchange.attributes[Constant.REQUEST_MODEL_NAME] = modelAndStream.model
+
+            val user = token.details.user
+            if (user.usedQuota >= user.allQuota) {
+                return@flatMap Mono.error(AccessDeniedException("用户配额已达到限制"))
+            }
+
+            val providers = globalCache.groupCache.getIfPresent(user.group)?.get(modelAndStream.model)
+            if (providers.isNullOrEmpty()) {
+                return@flatMap Mono.error(AccessDeniedException("模型: ${modelAndStream.model}, 无可用服务商"))
+            }
+
+            val provider = ProviderRouter(providers).route()
+            val chatModel = BeanManager.getBean(
+                "${Constant.CHAT_MODEL_IMPL}${provider.type}",
+                ChatModel::class.java
+            )
+            authorizationContext.exchange.attributes[Constant.SERVICE_PROVIDER] = provider
+            authorizationContext.exchange.attributes[Constant.CHAT_MODEL_IMPL] = chatModel
 
             Mono.just(AuthorizationDecision(true))
 

@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono
 class ReactiveRequestContextFilter: WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         return chain.filter(exchange)
-            .contextWrite { it.put(ContextHolder.CONTEXT_KEY, it) }
+            .contextWrite { it.put(ContextHolder.CONTEXT_KEY, exchange) }
     }
 }
