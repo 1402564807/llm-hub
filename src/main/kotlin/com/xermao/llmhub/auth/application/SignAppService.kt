@@ -19,8 +19,8 @@ class SignAppService(
 
     fun signIn(signInVm: SignInVm): String {
         val userRolePermissionView = userDomainApi.queryUniqueUserRolePermissionBy(
-                UserQueryDto(null, signInVm.username)
-            )
+            UserQueryDto(null, signInVm.username)
+        )
         if (userRolePermissionView == null) {
             throw BusinessException(String.format("%s user not found", signInVm.username))
         }

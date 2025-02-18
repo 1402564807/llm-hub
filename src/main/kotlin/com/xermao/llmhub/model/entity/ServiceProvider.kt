@@ -1,6 +1,6 @@
 package com.xermao.llmhub.model.entity
 
-import com.xermao.llmhub.constant.ModelType
+import com.xermao.llmhub.common.domain.constant.ModelType
 import com.xermao.llmhub.common.domain.model.superclass.CreatedTime
 import com.xermao.llmhub.common.domain.model.superclass.Id
 import org.babyfish.jimmer.sql.Column
@@ -17,11 +17,14 @@ interface ServiceProvider : Id, CreatedTime {
     val weight: Int
     val key: String
     val baseUrl: String
+
     @Column(sqlElementType = "varchar")
     val models: List<String>
+
     @Column(sqlElementType = "varchar")
     val group: List<String>
     val usedQuota: BigDecimal
+
     @Serialized
     val modelMap: Map<String, String>
     val status: Boolean

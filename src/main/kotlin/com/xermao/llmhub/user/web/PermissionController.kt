@@ -3,7 +3,6 @@ package com.xermao.llmhub.user.web
 import com.xermao.llmhub.user.domain.model.Permission
 import com.xermao.llmhub.user.domain.model.dto.PermissionInput
 import com.xermao.llmhub.user.domain.repository.PermissionRepository
-import org.babyfish.jimmer.sql.fetcher.Fetcher
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*

@@ -4,8 +4,8 @@ import com.xermao.llmhub.common.domain.model.superclass.Id
 import org.babyfish.jimmer.sql.*
 
 @Entity
-@Table(name = "llmhub.role")
-interface Role:Id {
+@Table(name = "llm_hub.role")
+interface Role : Id {
 
     @Key
     val code: String

@@ -1,22 +1,19 @@
 package com.xermao.llmhub.provider.volcengine
 
-import com.xermao.llmhub.constant.Constant
+import com.xermao.llmhub.common.domain.constant.Constant
+import com.xermao.llmhub.common.utils.JsonUtil
 import com.xermao.llmhub.model.ChatRequest
-import com.xermao.llmhub.model.Usage
 import com.xermao.llmhub.model.entity.ServiceProvider
 import com.xermao.llmhub.provider.ChatModel
-import com.xermao.llmhub.security.utils.ContextHolder
-import com.xermao.llmhub.common.utils.JsonUtil
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Mono
 import java.net.URI
 import java.util.function.Consumer
 
-@Component(Constant.CHAT_MODEL_IMPL+"1")
-class VolcengineChatModel: ChatModel {
+@Component(Constant.CHAT_MODEL_IMPL + "1")
+class VolcengineChatModel : ChatModel {
 
     private val log = LoggerFactory.getLogger(VolcengineChatModel::class.java)
 

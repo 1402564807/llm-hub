@@ -1,19 +1,17 @@
 package com.xermao.llmhub.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.xermao.llmhub.constant.Constant
-import com.xermao.llmhub.constant.Constant.SSE_DONE_PREDICATE
+import com.xermao.llmhub.auth.security.utils.ContextHolder
+import com.xermao.llmhub.common.domain.constant.Constant
 import com.xermao.llmhub.model.ChatRequest
 import com.xermao.llmhub.model.entity.ServiceProvider
 import com.xermao.llmhub.provider.ChatModel
-import com.xermao.llmhub.security.utils.ContextHolder
 import org.reactivestreams.Publisher
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
-import java.net.URI
 import java.util.concurrent.CompletableFuture
 
 @Service

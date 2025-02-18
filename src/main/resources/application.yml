@@ -16,8 +16,6 @@ server:
   port: ${WEB_EXPOSE_PORT}
 
 spring:
-  main:
-    allow-bean-definition-overriding: true
   threads:
     virtual:
       enabled: true

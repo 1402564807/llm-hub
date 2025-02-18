@@ -1,19 +1,19 @@
 package com.xermao.llmhub.common
 
-import com.xermao.llmhub.security.utils.writeErrorToResponse
+import com.xermao.llmhub.auth.security.utils.writeErrorToResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler
-import org.springframework.http.*
+import org.springframework.http.HttpStatus
+import org.springframework.http.ProblemDetail
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.firewall.RequestRejectedException
 import org.springframework.web.ErrorResponseException
-import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.springframework.web.context.request.WebRequest
+import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler
 import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import reactor.core.publisher.Mono
 
 @RestControllerAdvice
@@ -21,7 +21,7 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler, ResponseEntityException
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @ExceptionHandler(value = [BusinessException::class])
-    fun handleBusinessException(ex: BusinessException, request: WebRequest): ResponseEntity<Any>? {
+    fun handleBusinessException(ex: BusinessException, exchange: ServerWebExchange): Mono<ResponseEntity<Any>> {
         log.error("Business Error Handled  ===> ", ex)
         val errorResponseException = ErrorResponseException(
             HttpStatus.INTERNAL_SERVER_ERROR,
@@ -33,33 +33,32 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler, ResponseEntityException
             errorResponseException.body,
             errorResponseException.headers,
             errorResponseException.statusCode,
-            request
+            exchange
         )
     }
 
-    public override fun handleMethodArgumentNotValid(
-        ex: MethodArgumentNotValidException,
-        headers: HttpHeaders,
-        status: HttpStatusCode,
-        request: WebRequest
-    ): ResponseEntity<Any>? {
-        log.error("MethodArgumentNotValidException Handled  ===> ", ex)
-        val errorResponseException = ErrorResponseException(
-            status, ProblemDetail.forStatusAndDetail(status, ex.message), ex.cause
-        )
-        return handleExceptionInternal(
-            errorResponseException,
-            errorResponseException.body,
-            errorResponseException.headers,
-            errorResponseException.statusCode,
-            request
-        )
-    }
+//    public override fun handleMethodArgumentNotValid(
+//        ex: MethodArgumentNotValidException,
+//        status: HttpStatus,
+//        exchange: ServerWebExchange
+//    ): Mono<ResponseEntity<Any>> {
+//        log.error("MethodArgumentNotValidException Handled  ===> ", ex)
+//        val errorResponseException = ErrorResponseException(
+//            status, ProblemDetail.forStatusAndDetail(status, ex.message), ex.cause
+//        )
+//        return handleExceptionInternal(
+//            errorResponseException,
+//            errorResponseException.body,
+//            errorResponseException.headers,
+//            errorResponseException.statusCode,
+//            exchange
+//        )
+//    }
 
     @ExceptionHandler(value = [RequestRejectedException::class])
     fun handleRequestRejectedException(
-        ex: RequestRejectedException, request: WebRequest
-    ): ResponseEntity<Any>? {
+        ex: RequestRejectedException, exchange: ServerWebExchange
+    ): Mono<ResponseEntity<Any>> {
         log.error("RequestRejectedException Handled  ===> ", ex)
         val errorResponseException = ErrorResponseException(
             HttpStatus.BAD_REQUEST,
@@ -71,7 +70,7 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler, ResponseEntityException
             errorResponseException.body,
             errorResponseException.headers,
             errorResponseException.statusCode,
-            request
+            exchange
         )
     }
 
@@ -81,7 +80,7 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler, ResponseEntityException
     }
 
     @ExceptionHandler(value = [Throwable::class])
-    fun handleException(ex: Throwable, request: WebRequest): ResponseEntity<Any>? {
+    fun handleException(ex: Throwable, exchange: ServerWebExchange): Mono<ResponseEntity<Any>> {
         log.error("System Error Handled  ===> ", ex)
         val errorResponseException = ErrorResponseException(
             HttpStatus.INTERNAL_SERVER_ERROR,
@@ -93,7 +92,7 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler, ResponseEntityException
             errorResponseException.body,
             errorResponseException.headers,
             errorResponseException.statusCode,
-            request
+            exchange
         )
     }
 

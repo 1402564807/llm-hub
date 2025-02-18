@@ -1,6 +1,6 @@
 package com.xermao.llmhub.scheduled
 
-import com.xermao.llmhub.cache.GlobalCache
+import com.xermao.llmhub.common.cache.GlobalCache
 import com.xermao.llmhub.model.entity.ServiceProvider
 import jakarta.annotation.PostConstruct
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -30,13 +30,18 @@ class GroupCacheScheduled(
             provider.group.forEach { g ->
                 provider.models.forEach { model ->
 
-                    val targetModel = provider.modelMap.filterValues { it == model }.keys.firstOrNull()?:model
+                    val targetModel = provider.modelMap.filterValues { it == model }.keys.firstOrNull() ?: model
 
                     globalCache.groupCache
                         .get(g) { mutableMapOf() }
                         .getOrPut(targetModel) { mutableListOf() }
                         .add(provider)
-                    log.info("Group2Model2Provider 缓存路径 group: {} -> model: {} -> provider: {} 已刷新", g, targetModel, provider.id)
+                    log.info(
+                        "Group2Model2Provider 缓存路径 group: {} -> model: {} -> provider: {} 已刷新",
+                        g,
+                        targetModel,
+                        provider.id
+                    )
                 }
             }
         }

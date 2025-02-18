@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
 
 @Component
-object BeanManager: ApplicationContextAware {
+object BeanManager : ApplicationContextAware {
 
     private lateinit var applicationContext: ApplicationContext
 
