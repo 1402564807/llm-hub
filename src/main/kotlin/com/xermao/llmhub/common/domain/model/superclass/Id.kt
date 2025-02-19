@@ -9,5 +9,5 @@ import org.babyfish.jimmer.sql.MappedSuperclass
 interface Id {
     @Id
     @GeneratedValue(generatorType = SnowIdGenerator::class)
-    val id: String
+    val id: Long
 }
