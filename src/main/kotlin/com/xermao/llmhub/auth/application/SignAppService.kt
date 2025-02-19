@@ -6,6 +6,7 @@ import com.xermao.llmhub.common.BusinessException
 import com.xermao.llmhub.user.UserAppApi
 import com.xermao.llmhub.user.UserDomainApi
 import com.xermao.llmhub.user.UserQueryDto
+import com.xermao.llmhub.user.domain.model.dto.UserRolePermissionView
 import com.xermao.llmhub.user.domain.model.dto.UserRoleShortInput
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ class SignAppService(
     private val passwordEncoder: PasswordEncoder,
 ) {
 
-    fun signIn(signInVm: SignInVm): Long {
+    fun signIn(signInVm: SignInVm): UserRolePermissionView {
         val userRolePermissionView = userDomainApi.queryUniqueUserRolePermissionBy(
             UserQueryDto(null, signInVm.username)
         )
@@ -27,7 +28,7 @@ class SignAppService(
         if (!passwordEncoder.matches(signInVm.password, userRolePermissionView.password)) {
             throw BusinessException("password invalid")
         }
-        return userRolePermissionView.id
+        return userRolePermissionView
     }
 
     fun signUp(signUpVm: SignUpVm) {

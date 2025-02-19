@@ -16,7 +16,8 @@ import java.util.*
 @Component
 class Jwt(
     @param:Value("\${jwt.secret}") private val secret: String,
-    @param:Value("\${jwt.expiration-min}") private val expirationMin: Int
+    @param:Value("\${jwt.expiration-min}") val expirationMin: Long,
+    @param:Value("\${jwt.expiration-max}") val expirationMax: Long
 ) {
     private val verifier: JWTVerifier = JWT.require(Algorithm.HMAC256(secret)).build()
 
@@ -43,13 +44,17 @@ class Jwt(
     }
 
     fun create(userIdentify: String): String {
+        return create(userIdentify, expirationMin)
+    }
+
+    fun create(userIdentify: String, expiration: Long = expirationMin): String {
         return JWT.create()
             .withSubject(userIdentify)
             .withIssuedAt(Date())
             .withExpiresAt(
                 Date.from(
                     LocalDateTime.now()
-                        .plusMinutes(expirationMin.toLong())
+                        .plusMinutes(expiration)
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
                 )
@@ -57,10 +62,12 @@ class Jwt(
             .sign(Algorithm.HMAC256(secret))
     }
 
-    fun makeToken(userIdentify: Long): Mono<Void> {
+    fun makeToken(userIdentify: String): Mono<String> {
+        val token = create(userIdentify)
         return ContextHolder.exchange.map { exchangeContext ->
-            exchangeContext.response.headers.add(HttpHeaders.AUTHORIZATION, "Bearer $userIdentify")
-        }.flatMap { Mono.empty() }
+            exchangeContext.response.headers.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            return@map token
+        }.flatMap { Mono.just(it) }
     }
 
     fun removeToken(): Mono<Void> {

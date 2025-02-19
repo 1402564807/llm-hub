@@ -1,0 +1,157 @@
+.llm-hub-segmented {
+  --llm-hub-control-padding-horizontal: 12px;
+  --llm-hub-control-padding-horizontal-sm: 8px;
+  --llm-hub-segmented-track-padding: 2px;
+  --llm-hub-segmented-line-width: 1px;
+
+  --llm-hub-segmented-border-radius-small: 4px;
+  --llm-hub-segmented-border-radius-base: 6px;
+  --llm-hub-segmented-border-radius-large: 8px;
+
+  box-sizing: border-box;
+  display: inline-block;
+  padding: var(--llm-hub-segmented-track-padding);
+  font-size: var(--el-font-size-base);
+  color: rgba(0, 0, 0, 0.65);
+  background-color: rgb(0 0 0 / 4%);
+  border-radius: var(--llm-hub-segmented-border-radius-base);
+}
+
+.llm-hub-segmented-block {
+  display: flex;
+}
+
+.llm-hub-segmented-block .llm-hub-segmented-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.llm-hub-segmented-block .llm-hub-segmented-item > .llm-hub-segmented-item-label > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* small */
+.llm-hub-segmented.llm-hub-segmented--small {
+  border-radius: var(--llm-hub-segmented-border-radius-small);
+}
+.llm-hub-segmented.llm-hub-segmented--small .llm-hub-segmented-item {
+  border-radius: var(--el-border-radius-small);
+}
+.llm-hub-segmented.llm-hub-segmented--small .llm-hub-segmented-item > div {
+  min-height: calc(
+    var(--el-component-size-small) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  line-height: calc(
+    var(--el-component-size-small) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  padding: 0
+    calc(
+      var(--llm-hub-control-padding-horizontal-sm) -
+        var(--llm-hub-segmented-line-width)
+    );
+}
+
+/* large */
+.llm-hub-segmented.llm-hub-segmented--large {
+  border-radius: var(--llm-hub-segmented-border-radius-large);
+}
+.llm-hub-segmented.llm-hub-segmented--large .llm-hub-segmented-item {
+  border-radius: calc(
+    var(--el-border-radius-base) + var(--el-border-radius-small)
+  );
+}
+.llm-hub-segmented.llm-hub-segmented--large .llm-hub-segmented-item > div {
+  min-height: calc(
+    var(--el-component-size-large) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  line-height: calc(
+    var(--el-component-size-large) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  padding: 0
+    calc(
+      var(--llm-hub-control-padding-horizontal) - var(--llm-hub-segmented-line-width)
+    );
+  font-size: var(--el-font-size-medium);
+}
+
+/* default */
+.llm-hub-segmented-item {
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  border-radius: var(--el-border-radius-base);
+  transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.llm-hub-segmented .llm-hub-segmented-item > div {
+  min-height: calc(
+    var(--el-component-size) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  line-height: calc(
+    var(--el-component-size) - var(--llm-hub-segmented-track-padding) * 2
+  );
+  padding: 0
+    calc(
+      var(--llm-hub-control-padding-horizontal) - var(--llm-hub-segmented-line-width)
+    );
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: 0.1s;
+}
+
+.llm-hub-segmented-group {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-items: flex-start;
+  width: 100%;
+}
+
+.llm-hub-segmented-item-selected {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  display: none;
+  width: 0;
+  height: 100%;
+  padding: 4px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 8px -2px rgb(0 0 0 / 5%),
+    0 1px 4px -1px rgb(0 0 0 / 7%),
+    0 0 1px rgb(0 0 0 / 7%);
+  transition:
+    transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+    width 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  will-change: transform, width;
+}
+
+.llm-hub-segmented-item > input {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.llm-hub-segmented-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.llm-hub-segmented-item-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.llm-hub-segmented-item-disabled {
+  color: rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+}

@@ -1,0 +1,37 @@
+@use "theme";
+@use "transition";
+@use "element-plus";
+@use "sidebar";
+@use "dark";
+
+/* 自定义全局 CssVar */
+:root {
+  /* 左侧菜单展开、收起动画时长 */
+  --llm-hub-transition-duration: 0.3s;
+
+  /* 常用border-color 需要时可取用 */
+  --llm-hub-border-color: rgb(5 5 5 / 6%);
+
+  /* switch关闭状态下的color 需要时可取用 */
+  --llm-hub-switch-off-color: #a6a6a6;
+
+  /** 主题色 */
+  --llm-hub-theme-sub-menu-active-text: initial;
+  --llm-hub-theme-menu-bg: none;
+  --llm-hub-theme-menu-hover: none;
+  --llm-hub-theme-sub-menu-bg: transparent;
+  --llm-hub-theme-menu-text: initial;
+  --llm-hub-theme-sidebar-logo: none;
+  --llm-hub-theme-menu-title-hover: initial;
+  --llm-hub-theme-menu-active-before: transparent;
+}
+
+/* 灰色模式 */
+.html-grey {
+  filter: grayscale(100%);
+}
+
+/* 色弱模式 */
+.html-weakness {
+  filter: invert(80%);
+}

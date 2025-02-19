@@ -37,7 +37,8 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET:secret}
-  expiration-min: ${JWT_EXPIRATION_MIN:100}
+  expiration-min: ${JWT_EXPIRATION_MIN:1440}
+  expiration-max: ${JWT_EXPIRATION_MIN:10080}
 
 cors:
   allowedOrigins: ${ALLOWED_ORIGINS}

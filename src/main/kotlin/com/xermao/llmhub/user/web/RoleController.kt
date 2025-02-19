@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toMono
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 class RoleController(
     private val roleRepository: RoleRepository
 ) {

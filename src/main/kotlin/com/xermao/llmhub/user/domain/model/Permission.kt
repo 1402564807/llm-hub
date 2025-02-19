@@ -7,7 +7,7 @@ import org.babyfish.jimmer.sql.ManyToMany
 import org.babyfish.jimmer.sql.Table
 
 @Entity
-@Table(name = "permission")
+@Table(name = "llm_hub.permission")
 interface Permission : Id {
 
     @Key

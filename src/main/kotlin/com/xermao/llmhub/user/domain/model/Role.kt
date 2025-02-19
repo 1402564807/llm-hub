@@ -16,6 +16,6 @@ interface Role : Id {
     val users: List<User>
 
     @ManyToMany
-    @JoinTable(name = "role_permission_map", joinColumnName = "role_id", inverseJoinColumnName = "permission_id")
+    @JoinTable(name = "llm_hub.role_permission_map", joinColumnName = "role_id", inverseJoinColumnName = "permission_id")
     val permissions: List<Permission>
 }

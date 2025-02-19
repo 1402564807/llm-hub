@@ -29,6 +29,6 @@ interface User : Id, CreatedTime {
     val tokens: List<Token>
 
     @ManyToMany
-    @JoinTable(name = "user_role_map", joinColumnName = "user_id", inverseJoinColumnName = "role_id")
+    @JoinTable(name = "llm_hub.user_role_map", joinColumnName = "user_id", inverseJoinColumnName = "role_id")
     val roles: List<Role>
 }

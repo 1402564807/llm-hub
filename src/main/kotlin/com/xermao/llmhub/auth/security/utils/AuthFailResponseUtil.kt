@@ -12,7 +12,7 @@ private val objectMapper = ObjectMapper()
 fun writeErrorToResponse(response: ServerHttpResponse, throwable: Throwable): Mono<Void> {
     response.setStatusCode(HttpStatus.UNAUTHORIZED)
     response.headers.contentType = MediaType.APPLICATION_JSON
-    val body = R(500, throwable.message ?: "", false)
+    val body = R(500, throwable.message ?: "", false, null)
     val dataBuffer = response.bufferFactory().wrap(objectMapper.writeValueAsBytes(body))
     return response.writeWith(Mono.just(dataBuffer))
 }

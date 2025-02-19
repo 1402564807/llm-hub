@@ -56,6 +56,8 @@ class SecurityConfig {
             .authorizeExchange {
                 // 授权，判断用户是否有权限。
                 it.pathMatchers("/v1/**").access(AuthorizationManager(globalCache))
+                    .anyExchange()
+                    .permitAll()
             }
             .authenticationManager(authenticationManager)
             .exceptionHandling {
@@ -102,7 +104,7 @@ class SecurityConfig {
                 it.authenticationEntryPoint(AuthenticationEntryPoint())
             }
             .sessionManagement { }
-            .addFilterAfter(JwtAuthenticationFilter(jwt, userDetailsAppService), SecurityWebFiltersOrder.AUTHORIZATION);
+            .addFilterAfter(JwtAuthenticationFilter(jwt, userDetailsAppService), SecurityWebFiltersOrder.AUTHORIZATION)
 
         return http.build()
     }

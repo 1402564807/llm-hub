@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("/api/permissions")
 class PermissionController(
     private val permissionRepository: PermissionRepository
 ) {
