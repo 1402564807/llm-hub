@@ -17,7 +17,7 @@ class SignAppService(
     private val passwordEncoder: PasswordEncoder,
 ) {
 
-    fun signIn(signInVm: SignInVm): String {
+    fun signIn(signInVm: SignInVm): Long {
         val userRolePermissionView = userDomainApi.queryUniqueUserRolePermissionBy(
             UserQueryDto(null, signInVm.username)
         )

@@ -57,7 +57,7 @@ class Jwt(
             .sign(Algorithm.HMAC256(secret))
     }
 
-    fun makeToken(userIdentify: String): Mono<Void> {
+    fun makeToken(userIdentify: Long): Mono<Void> {
         return ContextHolder.exchange.map { exchangeContext ->
             exchangeContext.response.headers.add(HttpHeaders.AUTHORIZATION, "Bearer $userIdentify")
         }.flatMap { Mono.empty() }

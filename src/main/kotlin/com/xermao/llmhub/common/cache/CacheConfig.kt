@@ -24,6 +24,7 @@ class CacheConfig {
         val cache = Caffeine.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(Duration.ofMinutes(1))
+            .recordStats()
             .build<Any, Any>()
         return CaffeineCache(VERIFY_CODE, cache)
     }

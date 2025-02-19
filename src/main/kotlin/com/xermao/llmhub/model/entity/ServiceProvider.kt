@@ -6,9 +6,11 @@ import com.xermao.llmhub.common.domain.model.superclass.Id
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Serialized
+import org.babyfish.jimmer.sql.Table
 import java.math.BigDecimal
 
 @Entity
+@Table(name = "llm_hub.service_provider")
 interface ServiceProvider : Id, CreatedTime {
 
     val type: ModelType

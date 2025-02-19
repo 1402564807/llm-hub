@@ -1,3 +1,3 @@
 package com.xermao.llmhub.user
 
-data class UserQueryDto(val id: String?, val username: String?)
+data class UserQueryDto(val id: Long?, val username: String?)

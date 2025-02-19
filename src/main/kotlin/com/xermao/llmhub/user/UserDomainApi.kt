@@ -6,5 +6,5 @@ import com.xermao.llmhub.user.domain.model.dto.UserRoleShortInput
 interface UserDomainApi {
     fun queryUniqueUserRolePermissionBy(userQueryDto: UserQueryDto): UserRolePermissionView?
 
-    fun addGeneralUser(userRoleInputShort: UserRoleShortInput): String
+    fun addGeneralUser(userRoleInputShort: UserRoleShortInput): Long
 }

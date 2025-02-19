@@ -4,6 +4,8 @@ import com.xermao.llmhub.user.domain.model.Role
 import com.xermao.llmhub.user.domain.model.dto.RolePermissionShortInput
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.fetcher.Fetcher
+import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 
 interface RoleRepository : KRepository<Role, Long> {
     fun findByCode(code: String): Role

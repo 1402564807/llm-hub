@@ -4,7 +4,7 @@ import com.xermao.llmhub.auth.security.model.ModelAndStream
 import com.xermao.llmhub.auth.security.model.TokenAuthenticationToken
 import com.xermao.llmhub.auth.security.utils.ProviderRouter
 import com.xermao.llmhub.common.cache.GlobalCache
-import com.xermao.llmhub.common.domain.constant.Constant
+import com.xermao.llmhub.common.domain.constant.GlobalConstant
 import com.xermao.llmhub.common.utils.BeanManager
 import com.xermao.llmhub.common.utils.JsonUtil
 import com.xermao.llmhub.provider.ChatModel
@@ -72,7 +72,7 @@ class AuthorizationManager(
                 return@flatMap Mono.error(AccessDeniedException("该令牌无权访问模型: ${modelAndStream.model}"))
             }
 
-            authorizationContext.exchange.attributes[Constant.REQUEST_MODEL_NAME] = modelAndStream.model
+            authorizationContext.exchange.attributes[GlobalConstant.REQUEST_MODEL_NAME] = modelAndStream.model
 
             val user = token.details.user
             if (user.usedQuota >= user.allQuota) {
@@ -86,11 +86,11 @@ class AuthorizationManager(
 
             val provider = ProviderRouter(providers).route()
             val chatModel = BeanManager.getBean(
-                "${Constant.CHAT_MODEL_IMPL}${provider.type}",
+                "${GlobalConstant.CHAT_MODEL_IMPL}${provider.type.getTitle()}",
                 ChatModel::class.java
             )
-            authorizationContext.exchange.attributes[Constant.SERVICE_PROVIDER] = provider
-            authorizationContext.exchange.attributes[Constant.CHAT_MODEL_IMPL] = chatModel
+            authorizationContext.exchange.attributes[GlobalConstant.SERVICE_PROVIDER] = provider
+            authorizationContext.exchange.attributes[GlobalConstant.CHAT_MODEL_IMPL] = chatModel
 
             Mono.just(AuthorizationDecision(true))
 

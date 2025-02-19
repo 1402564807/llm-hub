@@ -13,6 +13,6 @@ class UserAppService(
 
     @Transactional(rollbackFor = [Throwable::class])
     override fun addGeneralUser(userRoleInputShort: UserRoleShortInput) {
-        val savedId: String = userDomainService.addGeneralUser(userRoleInputShort)
+        val savedId: Long = userDomainService.addGeneralUser(userRoleInputShort)
     }
 }

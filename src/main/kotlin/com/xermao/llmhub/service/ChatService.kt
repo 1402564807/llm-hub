@@ -2,7 +2,7 @@ package com.xermao.llmhub.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.xermao.llmhub.auth.security.utils.ContextHolder
-import com.xermao.llmhub.common.domain.constant.Constant
+import com.xermao.llmhub.common.domain.constant.GlobalConstant
 import com.xermao.llmhub.model.ChatRequest
 import com.xermao.llmhub.model.entity.ServiceProvider
 import com.xermao.llmhub.provider.ChatModel
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.server.ServerWebExchange
 import java.util.concurrent.CompletableFuture
 
 @Service
@@ -25,63 +26,34 @@ class ChatService(
 
     fun chat(chatRequest: ChatRequest): Publisher<out Any> {
 
-//        val publisherMono = ContextHolder.exchange.map { exchange ->
-//            val chatModel = exchange.getRequiredAttribute<ChatModel>(Constant.REQUEST_MODEL_NAME)
-//            val provider = exchange.getRequiredAttribute<ServiceProvider>(Constant.SERVICE_PROVIDER)
-//            val retrieve = webClient.post().uri(URI.create(exchange.getRequiredAttribute(Constant.SERVICE_PROVIDER)))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .headers(chatModel.headers(provider))
-//                .bodyValue(chatModel.body(chatRequest))
-//                .retrieve()
-//
-//            if (chatRequest.stream) {
-//                return@map retrieve
-//                    .bodyToFlux(String::class.java)
-//                    .takeUntil(SSE_DONE_PREDICATE)
-//                    .filter(SSE_DONE_PREDICATE.negate())
-//                    .map { chatModel.usage(it) }
-//            }
-//            return@map retrieve.bodyToMono(Map::class.java)
-//
-//        }
-//
-//        if (chatRequest.stream) {
-//            return publisherMono.flatMapMany { it }
-//        }
-//
-//        return publisherMono.flatMap { it }
-
-
         if (chatRequest.stream) {
             return ContextHolder.exchange.map { exchange ->
-                val chatModel = exchange.getRequiredAttribute<ChatModel>(Constant.CHAT_MODEL_IMPL)
-                val provider = exchange.getRequiredAttribute<ServiceProvider>(Constant.SERVICE_PROVIDER)
-                val targetModel = provider.modelMap.getOrElse(chatRequest.model) { chatRequest.model }
-                chatRequest.model = targetModel
-                webClient.post().uri(chatModel.uri(provider))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .headers(chatModel.headers(provider))
-                    .bodyValue(chatModel.body(chatRequest))
-                    .retrieve()
+                val (retrieve, chatModel) = handle(exchange, chatRequest)
+                retrieve
                     .bodyToFlux(String::class.java)
-//                    .takeUntil(SSE_DONE_PREDICATE)
-//                    .filter(SSE_DONE_PREDICATE.negate())
                     .doOnNext { CompletableFuture.runAsync { chatModel.usage(it) } }
             }.flatMapMany { it }
         }
-        return ContextHolder.exchange.map {
-            val chatModel = it.getRequiredAttribute<ChatModel>(Constant.CHAT_MODEL_IMPL)
-            val provider = it.getRequiredAttribute<ServiceProvider>(Constant.SERVICE_PROVIDER)
-            val targetModel = provider.modelMap.getOrElse(chatRequest.model) { chatRequest.model }
-            chatRequest.model = targetModel
-            webClient.post().uri(chatModel.uri(provider))
-                .contentType(MediaType.APPLICATION_JSON)
-                .headers(chatModel.headers(provider))
-                .bodyValue(chatModel.body(chatRequest))
-                .retrieve()
+        return ContextHolder.exchange.map { exchange ->
+            val (retrieve, chatModel) = handle(exchange, chatRequest)
+            retrieve
                 .bodyToMono(Map::class.java)
                 .doOnNext { CompletableFuture.runAsync { chatModel.usage(it) } }
         }.flatMap { it }
 
+    }
+
+
+    private fun handle(exchange: ServerWebExchange, chatRequest: ChatRequest): Pair<WebClient.ResponseSpec, ChatModel> {
+        val chatModel = exchange.getRequiredAttribute<ChatModel>(GlobalConstant.CHAT_MODEL_IMPL)
+        val provider = exchange.getRequiredAttribute<ServiceProvider>(GlobalConstant.SERVICE_PROVIDER)
+        chatRequest.model = provider.modelMap.getOrElse(chatRequest.model) { chatRequest.model }
+        val retrieve = webClient.post().uri(chatModel.uri(provider))
+            .contentType(MediaType.APPLICATION_JSON)
+            .headers(chatModel.headers(provider))
+            .bodyValue(chatModel.body(chatRequest))
+            .retrieve()
+
+        return Pair(retrieve, chatModel)
     }
 }

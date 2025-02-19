@@ -9,17 +9,21 @@ enum class ModelType(
     private val title: String,
 ) {
     @EnumItem(ordinal = 0)
-    OPEN_AI(0, "OpenAI"),
+    OPEN_AI(0, "open_ai"),
 
     @EnumItem(ordinal = 1)
-    VOLC_ENGINE(1, "VolcEngine"),
+    VOLCENGINE(1, "volcengine"),
 
     @EnumItem(ordinal = 2)
-    ALI(2, "Ali"),
+    ALI(2, "ali"),
 
     @EnumItem(ordinal = 3)
-    ZHI_PU(3, "ZhiPu"),
+    ZHI_PU(3, "zhi_pu"),
 
     @EnumItem(ordinal = 4)
-    AZURE_OPEN_AI(4, "AzureOpenAI"),
+    AZURE_OPEN_AI(4, "azure_open_ai"),;
+
+    fun getTitle(): String {
+        return this.title
+    }
 }

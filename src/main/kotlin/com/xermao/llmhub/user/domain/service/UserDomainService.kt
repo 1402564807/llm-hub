@@ -39,7 +39,7 @@ class UserDomainService(
         }
     }
 
-    override fun addGeneralUser(userRoleInputShort: UserRoleShortInput): String {
+    override fun addGeneralUser(userRoleInputShort: UserRoleShortInput): Long {
         val roles = roleRepository.findByCodeIn(listOf(ERole.GENERAL.name))
         val input = userRoleInputShort.copy(rolesId = roles.map { it.id }.toList())
         val save = sqlClient.save(input)

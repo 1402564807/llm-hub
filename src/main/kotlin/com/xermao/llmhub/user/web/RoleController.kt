@@ -9,6 +9,8 @@ import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 
 @RestController
 @RequestMapping("/roles")
@@ -18,7 +20,7 @@ class RoleController(
 
     @GetMapping
     @PreAuthorize("hasAuthority(T(com.xermao.llmhub.user.domain.enums.EPermission).READ_USER_ROLE_PERMISSION)")
-    fun roles(): List<Role> = roleRepository.fetchRoleComplexBy(ROLE_FETCHER)
+    fun roles(): Mono<List<Role>> = roleRepository.fetchRoleComplexBy(ROLE_FETCHER).toMono()
 
     @PreAuthorize("hasAuthority(T(com.xermao.llmhub.user.domain.enums.EPermission).WRITE_USER_ROLE_PERMISSION)")
     @PostMapping("/upsert")

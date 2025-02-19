@@ -8,7 +8,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class TokenDetail(
-    val id: String,
+    val id: Long,
     val user: User,
     val name: String,
     val key: String,
