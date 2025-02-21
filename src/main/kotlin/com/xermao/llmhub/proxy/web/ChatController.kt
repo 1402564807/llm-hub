@@ -1,7 +1,7 @@
-package com.xermao.llmhub.controller
+package com.xermao.llmhub.proxy.web
 
-import com.xermao.llmhub.model.ChatRequest
-import com.xermao.llmhub.service.ChatService
+import com.xermao.llmhub.proxy.model.ChatRequest
+import com.xermao.llmhub.proxy.application.ChatService
 import org.reactivestreams.Publisher
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,4 +19,12 @@ class ChatController(
     fun chat(@RequestBody chatRequest: ChatRequest): Publisher<out Any> {
         return chatService.chat(chatRequest)
     }
+
+
+//    @PostMapping("/chat/completions")
+//    suspend fun chat(@RequestBody chatRequest: ChatRequest): Any {
+//        val attributes = ContextHolder.exchange.awaitSingle().attributes
+//        val context = ReactiveSecurityContextHolder.getContext().awaitSingle()
+//        return context.authentication
+//    }
 }

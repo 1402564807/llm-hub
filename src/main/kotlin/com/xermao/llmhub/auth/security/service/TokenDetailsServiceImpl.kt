@@ -1,9 +1,9 @@
 package com.xermao.llmhub.auth.security.service
 
 import com.xermao.llmhub.auth.security.model.TokenDetail
-import com.xermao.llmhub.model.entity.Token
-import com.xermao.llmhub.model.entity.fetchBy
-import com.xermao.llmhub.model.entity.key
+import com.xermao.llmhub.token.model.Token
+import com.xermao.llmhub.token.model.fetchBy
+import com.xermao.llmhub.token.model.key
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService

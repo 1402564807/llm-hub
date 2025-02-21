@@ -206,9 +206,7 @@
     }
 
     /* 有子集的激活菜单左侧小竖条 */
-    .el-menu--collapse,
-    .is-active.outer-most.el-sub-menu,
-    > .el-sub-menu__title::before {
+    .el-menu--collapse .is-active .outer-most .el-sub-menu > .el-sub-menu__title::before {
       position: absolute;
       top: 0;
       left: 0;
@@ -221,7 +219,7 @@
       transform: translateY(0);
     }
 
-    .el-menu--collapse .outer-most.el-sub-menu > .el-sub-menu__title::before {
+    .el-menu--collapse .outer-most .el-sub-menu > .el-sub-menu__title::before {
       position: absolute;
       top: 50%;
       display: block;
@@ -460,13 +458,13 @@
 
       /* 搜索 */
       .search-container,
-      /* 全屏 */
+        /* 全屏 */
       .fullscreen-icon,
-      /* 消息通知 */
+        /* 消息通知 */
       .dropdown-badge,
-      /* 用户名 */
+        /* 用户名 */
       .el-dropdown-link,
-      /* 设置 */
+        /* 设置 */
       .set-icon {
         &:hover {
           background: var(--llm-hub-theme-menu-hover);
@@ -634,13 +632,13 @@ body[layout="vertical"] {
 
   /* 搜索 */
   .search-container,
-  /* 全屏 */
+    /* 全屏 */
   .fullscreen-icon,
-  /* 消息通知 */
+    /* 消息通知 */
   .dropdown-badge,
-  /* 用户名 */
+    /* 用户名 */
   .el-dropdown-link,
-  /* 设置 */
+    /* 设置 */
   .set-icon {
     &:hover {
       background: #f6f6f6;

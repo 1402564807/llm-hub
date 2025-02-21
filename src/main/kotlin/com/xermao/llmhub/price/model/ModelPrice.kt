@@ -1,4 +1,4 @@
-package com.xermao.llmhub.model.entity
+package com.xermao.llmhub.price.model
 
 import com.xermao.llmhub.common.domain.constant.ModelType
 import com.xermao.llmhub.common.domain.model.superclass.Id

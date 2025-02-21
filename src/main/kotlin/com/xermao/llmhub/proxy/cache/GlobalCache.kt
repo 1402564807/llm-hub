@@ -1,9 +1,9 @@
-package com.xermao.llmhub.common.cache
+package com.xermao.llmhub.proxy.cache
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
-import com.xermao.llmhub.model.entity.ModelPrice
-import com.xermao.llmhub.model.entity.ServiceProvider
+import com.xermao.llmhub.price.model.ModelPrice
+import com.xermao.llmhub.provider.model.ServiceProvider
 import org.springframework.stereotype.Component
 import java.time.Duration
 

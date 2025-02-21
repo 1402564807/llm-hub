@@ -47,6 +47,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:0.9.50")
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")

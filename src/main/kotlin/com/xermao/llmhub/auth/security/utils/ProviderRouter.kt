@@ -1,6 +1,6 @@
 package com.xermao.llmhub.auth.security.utils
 
-import com.xermao.llmhub.model.entity.ServiceProvider
+import com.xermao.llmhub.provider.model.ServiceProvider
 import kotlin.random.Random
 
 class ProviderRouter(

@@ -1,4 +1,4 @@
-package com.xermao.llmhub.model.entity
+package com.xermao.llmhub.token.model
 
 import com.xermao.llmhub.common.domain.model.superclass.Id
 import com.xermao.llmhub.user.domain.model.User

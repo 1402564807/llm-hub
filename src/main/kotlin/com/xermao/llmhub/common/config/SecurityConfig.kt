@@ -1,4 +1,4 @@
-package com.xermao.llmhub.config
+package com.xermao.llmhub.common.config
 
 import com.xermao.llmhub.auth.application.UserDetailsAppService
 import com.xermao.llmhub.auth.security.converter.AuthenticationConverter
@@ -13,7 +13,7 @@ import com.xermao.llmhub.auth.security.manage.AuthenticationManager
 import com.xermao.llmhub.auth.security.manage.AuthorizationManager
 import com.xermao.llmhub.auth.security.service.TokenDetailsServiceImpl
 import com.xermao.llmhub.auth.security.utils.Jwt
-import com.xermao.llmhub.common.cache.GlobalCache
+import com.xermao.llmhub.proxy.cache.GlobalCache
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod

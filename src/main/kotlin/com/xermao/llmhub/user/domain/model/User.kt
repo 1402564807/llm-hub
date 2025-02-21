@@ -2,7 +2,7 @@ package com.xermao.llmhub.user.domain.model
 
 import com.xermao.llmhub.common.domain.model.superclass.CreatedTime
 import com.xermao.llmhub.common.domain.model.superclass.Id
-import com.xermao.llmhub.model.entity.Token
+import com.xermao.llmhub.token.model.Token
 import org.babyfish.jimmer.sql.*
 import java.math.BigDecimal
 import java.time.LocalDateTime

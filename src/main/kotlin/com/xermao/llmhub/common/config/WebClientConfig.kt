@@ -1,4 +1,4 @@
-package com.xermao.llmhub.config
+package com.xermao.llmhub.common.config
 
 import io.netty.channel.ChannelOption
 import io.netty.handler.ssl.SslContextBuilder

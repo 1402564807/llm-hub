@@ -1,10 +1,10 @@
-package com.xermao.llmhub.provider.volcengine
+package com.xermao.llmhub.proxy.provider.volcengine
 
 import com.xermao.llmhub.common.domain.constant.ProviderNames
 import com.xermao.llmhub.common.utils.JsonUtil
-import com.xermao.llmhub.model.ChatRequest
-import com.xermao.llmhub.model.entity.ServiceProvider
-import com.xermao.llmhub.provider.ChatModel
+import com.xermao.llmhub.proxy.model.ChatRequest
+import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.proxy.provider.ChatModel
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType

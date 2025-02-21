@@ -1,4 +1,4 @@
-package com.xermao.llmhub.model
+package com.xermao.llmhub.common.domain.model
 
 data class R<T>(
     val code: Int,

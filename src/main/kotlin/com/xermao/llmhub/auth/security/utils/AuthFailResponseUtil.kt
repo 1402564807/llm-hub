@@ -1,7 +1,7 @@
 package com.xermao.llmhub.auth.security.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.xermao.llmhub.model.R
+import com.xermao.llmhub.common.domain.model.R
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.server.reactive.ServerHttpResponse

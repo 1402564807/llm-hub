@@ -3,11 +3,11 @@ package com.xermao.llmhub.auth.security.manage
 import com.xermao.llmhub.auth.security.model.ModelAndStream
 import com.xermao.llmhub.auth.security.model.TokenAuthenticationToken
 import com.xermao.llmhub.auth.security.utils.ProviderRouter
-import com.xermao.llmhub.common.cache.GlobalCache
+import com.xermao.llmhub.proxy.cache.GlobalCache
 import com.xermao.llmhub.common.domain.constant.GlobalConstant
 import com.xermao.llmhub.common.utils.BeanManager
 import com.xermao.llmhub.common.utils.JsonUtil
-import com.xermao.llmhub.provider.ChatModel
+import com.xermao.llmhub.proxy.provider.ChatModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.buffer.DataBufferUtils

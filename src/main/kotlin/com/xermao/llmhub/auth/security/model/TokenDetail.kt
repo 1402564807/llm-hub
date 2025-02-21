@@ -1,6 +1,6 @@
 package com.xermao.llmhub.auth.security.model
 
-import com.xermao.llmhub.model.entity.Token
+import com.xermao.llmhub.token.model.Token
 import com.xermao.llmhub.user.domain.model.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

@@ -1,7 +1,7 @@
-package com.xermao.llmhub.scheduled
+package com.xermao.llmhub.proxy.scheduled
 
-import com.xermao.llmhub.common.cache.GlobalCache
-import com.xermao.llmhub.model.entity.ServiceProvider
+import com.xermao.llmhub.proxy.cache.GlobalCache
+import com.xermao.llmhub.provider.model.ServiceProvider
 import jakarta.annotation.PostConstruct
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.slf4j.LoggerFactory

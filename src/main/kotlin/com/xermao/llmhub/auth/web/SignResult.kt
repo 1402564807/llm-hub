@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 
 data class SignResult(
-    val username: String,
+    val username: String?,
     val nickname: String?,
     val roles: Set<String>?,
     val permissions: Set<String>?,
@@ -30,12 +30,11 @@ data class SignResult(
     )
 
     constructor(
-        userDetails: UserDetails,
         accessToken: String,
         refreshToken: String,
         expires: LocalDateTime
     ) : this(
-        username = userDetails.username,
+        username = null,
         accessToken = accessToken,
         refreshToken = refreshToken,
         expires = expires,
