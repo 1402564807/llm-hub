@@ -1,9 +1,12 @@
 package com.xermao.llmhub.proxy.provider.volcengine
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.xermao.llmhub.common.domain.constant.GlobalConstant.SSE_DONE_PREDICATE
 import com.xermao.llmhub.common.domain.constant.ProviderNames
 import com.xermao.llmhub.common.utils.JsonUtil
-import com.xermao.llmhub.proxy.model.ChatRequest
 import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.proxy.model.ChatRequest
+import com.xermao.llmhub.proxy.model.Usage
 import com.xermao.llmhub.proxy.provider.ChatModel
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -41,10 +44,19 @@ class VolcengineChatModel : ChatModel {
             log.info(usage)
         }
         if (response is String) {
-            val fromJson = JsonUtil.fromJson(response, Map::class.java)
-            fromJson["usage"]?.let {
+            // SSE 结束标识 [DONE]
+            if (SSE_DONE_PREDICATE.test(response)) {
+                return
+            }
+            val chunk = JsonUtil.fromJson(response, ChatCompletionChunk::class.java)
+
+            chunk.usage?.let {
                 log.info(JsonUtil.toJson(it))
             }
         }
     }
+
+    data class ChatCompletionChunk(
+        @JsonProperty("usage") val usage: Usage?,
+    )
 }

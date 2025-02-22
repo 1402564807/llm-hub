@@ -6,11 +6,13 @@ import com.xermao.llmhub.user.domain.model.enable
 import com.xermao.llmhub.user.domain.model.id
 import com.xermao.llmhub.user.domain.model.username
 import com.xermao.llmhub.user.web.UserPageQueryVm
+import kotlinx.coroutines.reactor.mono
 import org.babyfish.jimmer.Page
 import org.babyfish.jimmer.sql.fetcher.Fetcher
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
 
 @Repository
 class UserAggregateRepository(
@@ -28,15 +30,15 @@ class UserAggregateRepository(
     fun fetchAggregateWithPageBy(
         fetcher: Fetcher<User>,
         userPageQueryVm: UserPageQueryVm,
-        pageIndex: Int,
-        pageSize: Int
-    ): Page<User> {
+    ): Mono<Page<User>> {
 
-        return sqlClient.createQuery(User::class) {
-            where(table.enable.`eq?`(userPageQueryVm.enable))
-            where(table.username.`eq?`(userPageQueryVm.username))
-            select(table.fetch(fetcher))
-        }.fetchPage(pageIndex, pageSize)
+        return mono {
+            sqlClient.createQuery(User::class) {
+                where(table.enable.`eq?`(userPageQueryVm.enable))
+                where(table.username.`eq?`(userPageQueryVm.username))
+                select(table.fetch(fetcher))
+            }.fetchPage(userPageQueryVm.pageIndex, userPageQueryVm.pageSize)
+        }
 
     }
 }

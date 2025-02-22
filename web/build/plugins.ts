@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { viteBuildInfo } from "./info";
 import svgLoader from "vite-svg-loader";
 import type { PluginOption } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { configCompressPlugin } from "./compress";
 import removeNoMatch from "vite-plugin-router-warn";
@@ -30,6 +31,7 @@ export function getPluginsList(
       bundler: "vite",
       hideConsole: true
     }),
+    tailwindcss(),
     viteBuildInfo(),
     /**
      * 开发环境下移除非必要的vue-router动态路由警告No match found for location with path

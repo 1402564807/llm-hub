@@ -410,7 +410,7 @@ onUnmounted(() => removeMatchMedia);
         <button
           v-else
           v-ripple="{ class: 'text-gray-300' }"
-          class="bg-transparent flex-c w-full h-20 rounded-md border border-[var(--llm-hub-border-color)]"
+          class="bg-transparent flex-c w-full h-20 rounded-md border border-(--llm-hub-border-color)"
           @click="setStretch(!settings.stretch)"
         >
           <div

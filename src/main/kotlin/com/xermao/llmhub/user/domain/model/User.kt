@@ -20,6 +20,7 @@ interface User : Id, CreatedTime {
     val allQuota: BigDecimal
     val usedQuota: BigDecimal
     val requestCount: Int
+    @Column(name = "\"group\"")
     val group: String
     val deletedTime: LocalDateTime?
 

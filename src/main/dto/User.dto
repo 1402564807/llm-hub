@@ -6,7 +6,7 @@ UserRolePermissionView {
     roles {
         #allScalars(this)
         permissions {
-             #allScalars(this)
+            #allScalars(this)
         }
     }
 }
@@ -15,4 +15,23 @@ input UserRoleShortInput {
     username
     password
     id(roles)? as rolesId
+}
+
+input UserAddInput {
+    username
+    nickname
+    password
+    allQuota
+    group
+    email
+    id(roles)? as rolesId
+}
+
+input UserUpdateInput {
+    id
+    password?
+    allQuota?
+    group?
+    email?
+    enable?
 }

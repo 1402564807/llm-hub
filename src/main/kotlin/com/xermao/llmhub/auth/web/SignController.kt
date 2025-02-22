@@ -4,6 +4,7 @@ import com.xermao.llmhub.auth.application.SignAppService
 import com.xermao.llmhub.auth.security.model.JwtAuthenticationToken
 import com.xermao.llmhub.auth.security.utils.Jwt
 import com.xermao.llmhub.common.domain.model.R
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.validation.annotation.Validated
@@ -22,18 +23,17 @@ class SignController(
 ) {
 
     @PostMapping("/refresh-token")
-    fun refreshToken(): Mono<R<SignResult>> {
-        return ReactiveSecurityContextHolder.getContext().flatMap {
-            if (it.authentication !is JwtAuthenticationToken) return@flatMap Mono.empty()
-            val authentication: JwtAuthenticationToken = it.authentication as JwtAuthenticationToken
-            val userDetails = authentication.principal as UserDetails
-            val signResult = SignResult(
-                jwt.create(userDetails.username),
-                jwt.create(userDetails.username, jwt.expirationMax),
-                LocalDateTime.now().plusMinutes(jwt.expirationMin),
-            )
-            Mono.just(R.success(signResult))
-        }
+    suspend fun refreshToken(): R<SignResult> {
+        val context = ReactiveSecurityContextHolder.getContext().awaitSingle()
+
+        val authenticationToken = context.authentication as JwtAuthenticationToken
+        val details = authenticationToken.principal as UserDetails
+        val signResult = SignResult(
+            jwt.create(details.username),
+            jwt.create(details.username, jwt.expirationMax),
+            LocalDateTime.now().plusMinutes(jwt.expirationMin),
+        )
+        return R.success(signResult)
     }
 
     @PostMapping("/sign-in")

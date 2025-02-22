@@ -3,7 +3,7 @@ package com.xermao.llmhub.common.utils
 import org.babyfish.jimmer.sql.meta.UserIdGenerator
 import java.util.concurrent.atomic.AtomicLong
 
-class SnowIdGenerator : UserIdGenerator<String> {
+class SnowIdGenerator : UserIdGenerator<Long> {
 
 
     private val defaultTwepoch: Long = 1588435200000L
@@ -31,10 +31,10 @@ class SnowIdGenerator : UserIdGenerator<String> {
     }
 
 
-    override fun generate(entityType: Class<*>): String {
+    override fun generate(entityType: Class<*>): Long {
         val next = timestampAndSequence.incrementAndGet()
         val timestampWithSequence = next and timestampAndSequenceMask
-        return (this.nodeId or timestampWithSequence).toString()
+        return (this.nodeId or timestampWithSequence)
     }
 
     private fun initNodeId(nodeId: Long) {

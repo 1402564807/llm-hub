@@ -51,7 +51,7 @@ const props = {
 };
 
 export default defineComponent({
-  name: "TableBar",
+  name: "PureTableBar",
   props,
   emits: ["refresh", "fullscreen"],
   setup(props, { emit, slots, attrs }) {
@@ -88,7 +88,7 @@ export default defineComponent({
         "duration-100",
         "hover:!text-primary",
         "cursor-pointer",
-        "outline-none"
+        "outline-hidden"
       ];
     });
 

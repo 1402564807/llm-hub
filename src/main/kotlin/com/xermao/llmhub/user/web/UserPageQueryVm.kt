@@ -1,4 +1,8 @@
 package com.xermao.llmhub.user.web
 
-@JvmRecord
-data class UserPageQueryVm(val username: String, val enable: Boolean)
+data class UserPageQueryVm(
+    val pageIndex: Int,
+    val pageSize: Int,
+    val username: String,
+    val enable: Boolean
+)

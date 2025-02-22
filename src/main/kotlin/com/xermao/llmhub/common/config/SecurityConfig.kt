@@ -9,6 +9,7 @@ import com.xermao.llmhub.auth.security.filter.TokenAuthenticationFilter
 import com.xermao.llmhub.auth.security.handler.AuthenticationDeniedHandler
 import com.xermao.llmhub.auth.security.handler.AuthenticationEntryPoint
 import com.xermao.llmhub.auth.security.handler.AuthenticationFailureHandler
+import com.xermao.llmhub.auth.security.handler.AuthenticationSuccessHandler
 import com.xermao.llmhub.auth.security.manage.AuthenticationManager
 import com.xermao.llmhub.auth.security.manage.AuthorizationManager
 import com.xermao.llmhub.auth.security.service.TokenDetailsServiceImpl
@@ -16,6 +17,7 @@ import com.xermao.llmhub.auth.security.utils.Jwt
 import com.xermao.llmhub.proxy.cache.GlobalCache
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder
@@ -33,6 +35,7 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource
 class SecurityConfig {
 
     @Bean
+    @Order(1)
     fun tokenAuthWebFilterChain(
         http: ServerHttpSecurity,
         tokenService: TokenDetailsServiceImpl,
@@ -40,17 +43,16 @@ class SecurityConfig {
     ): SecurityWebFilterChain {
         val authenticationManager = AuthenticationManager(tokenService)
         val authenticationFilter = TokenAuthenticationFilter(authenticationManager)
-        val matchers = ServerWebExchangeMatchers.pathMatchers("/v1/**")
         authenticationFilter.setServerAuthenticationConverter(AuthenticationConverter())
-        authenticationFilter.setAuthenticationSuccessHandler(com.xermao.llmhub.auth.security.handler.AuthenticationSuccessHandler())
+        authenticationFilter.setAuthenticationSuccessHandler(AuthenticationSuccessHandler())
         authenticationFilter.setAuthenticationFailureHandler(AuthenticationFailureHandler())
-        authenticationFilter.setRequiresAuthenticationMatcher(matchers)
 
         http.csrf { it.disable() }
             .cors { it.disable() }
             .logout { it.disable() }
             .httpBasic { it.disable() }
-            .addFilterAt(CacheRequestBodyFilter(matchers), SecurityWebFiltersOrder.FIRST)
+            .securityMatcher(PathPatternParserServerWebExchangeMatcher("/v1/**"))
+            .addFilterAt(CacheRequestBodyFilter(), SecurityWebFiltersOrder.FIRST)
             .addFilterAt(ReactiveRequestContextFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
             .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHORIZATION)
             .authorizeExchange {
@@ -74,26 +76,26 @@ class SecurityConfig {
     }
 
     @Bean
+    @Order(2)
     fun jwtAuthenticationFilter(
         http: ServerHttpSecurity,
-        corsConfigurationSource: CorsConfigurationSource,
         jwt: Jwt,
         userDetailsAppService: UserDetailsAppService
     ): SecurityWebFilterChain {
         http.csrf { it.disable() }
-            .cors { it.configurationSource(corsConfigurationSource) }
+            .cors { it.disable() }
+            .securityMatcher(PathPatternParserServerWebExchangeMatcher("/api/**"))
+            .addFilterAt(JwtAuthenticationFilter(jwt, userDetailsAppService), SecurityWebFiltersOrder.AUTHORIZATION)
             .authorizeExchange {
                 it.matchers(
-                    OrServerWebExchangeMatcher(
-                        PathPatternParserServerWebExchangeMatcher("/auth/sign-in", HttpMethod.POST),
-                        PathPatternParserServerWebExchangeMatcher("/auth/sign-up", HttpMethod.POST),
-                        PathPatternParserServerWebExchangeMatcher("/v3/api-docs/**", HttpMethod.GET),
-                        PathPatternParserServerWebExchangeMatcher("/swagger-ui/**", HttpMethod.GET),
-                        PathPatternParserServerWebExchangeMatcher("/swagger-ui.html", HttpMethod.GET),
-                        PathPatternParserServerWebExchangeMatcher("/swagger-ui.yml", HttpMethod.GET),
-                        PathPatternParserServerWebExchangeMatcher("/browser.zip", HttpMethod.GET),
-                        PathPatternParserServerWebExchangeMatcher("/error"),
-                    )
+                    PathPatternParserServerWebExchangeMatcher("/api/auth/sign-in", HttpMethod.POST),
+                    PathPatternParserServerWebExchangeMatcher("/api/auth/sign-up", HttpMethod.POST),
+                    PathPatternParserServerWebExchangeMatcher("/v3/api-docs/**", HttpMethod.GET),
+                    PathPatternParserServerWebExchangeMatcher("/swagger-ui/**", HttpMethod.GET),
+                    PathPatternParserServerWebExchangeMatcher("/swagger-ui.html", HttpMethod.GET),
+                    PathPatternParserServerWebExchangeMatcher("/swagger-ui.yml", HttpMethod.GET),
+                    PathPatternParserServerWebExchangeMatcher("/browser.zip", HttpMethod.GET),
+                    PathPatternParserServerWebExchangeMatcher("/error"),
                 )
                     .permitAll()
                     .anyExchange()
@@ -103,8 +105,6 @@ class SecurityConfig {
                 it.accessDeniedHandler(AuthenticationDeniedHandler())
                 it.authenticationEntryPoint(AuthenticationEntryPoint())
             }
-            .sessionManagement { }
-            .addFilterAfter(JwtAuthenticationFilter(jwt, userDetailsAppService), SecurityWebFiltersOrder.AUTHORIZATION)
 
         return http.build()
     }

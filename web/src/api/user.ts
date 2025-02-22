@@ -1,4 +1,6 @@
 import { http } from "@/utils/http";
+import type { HttpRequestConfig } from "@/utils/http/types";
+import { formatToken } from "@/utils/auth";
 
 export type UserResult = {
   success: boolean;
@@ -42,6 +44,6 @@ export const getLogin = (data?: object) => {
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/api/auth/refresh-token", {
-    data
-  });
+    headers: { Authorization: formatToken(data["refreshToken"]) }
+  } as HttpRequestConfig);
 };

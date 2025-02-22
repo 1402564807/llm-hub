@@ -15,9 +15,9 @@ class UserDetailsAppService(
 ) : UserDetailsService {
 
     @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(id: String): UserDetails {
-        val userRolePermissionView = userDomainApi.queryUniqueUserRolePermissionBy(UserQueryDto(id.toLong(), null))
-            ?: throw UsernameNotFoundException(String.format("uid %s user not found", id))
+    override fun loadUserByUsername(username: String): UserDetails {
+        val userRolePermissionView = userDomainApi.queryUniqueUserRolePermissionBy(UserQueryDto(null, username))
+            ?: throw UsernameNotFoundException(String.format("username is %s not found", username))
         return User(
             userRolePermissionView.username,
             userRolePermissionView.password,

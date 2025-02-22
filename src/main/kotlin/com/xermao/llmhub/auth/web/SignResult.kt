@@ -1,9 +1,11 @@
 package com.xermao.llmhub.auth.web
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.xermao.llmhub.user.domain.model.dto.UserRolePermissionView
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class SignResult(
     val username: String?,
     val nickname: String?,
