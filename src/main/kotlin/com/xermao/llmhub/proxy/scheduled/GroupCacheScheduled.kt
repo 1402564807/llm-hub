@@ -1,7 +1,7 @@
 package com.xermao.llmhub.proxy.scheduled
 
 import com.xermao.llmhub.proxy.cache.GlobalCache
-import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.provider.domain.model.Provider
 import jakarta.annotation.PostConstruct
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.slf4j.LoggerFactory
@@ -19,14 +19,14 @@ class GroupCacheScheduled(
     @PostConstruct
     @Scheduled(cron = "0 */10 * * * *")
     fun job() {
-        val serviceProviders = sqlClient.createQuery(ServiceProvider::class) { select(table) }.execute()
+        val providers = sqlClient.createQuery(Provider::class) { select(table) }.execute()
 
-        if (serviceProviders.isEmpty()) {
+        if (providers.isEmpty()) {
             log.info("service provider is empty, skipping refresh group cache...")
             return
         }
 
-        serviceProviders.forEach { provider ->
+        providers.forEach { provider ->
             provider.group.forEach { g ->
                 provider.models.forEach { model ->
 

@@ -38,7 +38,7 @@ class UserController(
     suspend fun pageQuery(@RequestBody userPageQueryVm: UserPageQueryVm): R<Page<User>> {
         val page = userAggregateRepository.fetchAggregateWithPageBy(
             USER_AGGREGATE, userPageQueryVm
-        ).awaitSingle()
+        )
         return R.success(page)
     }
 

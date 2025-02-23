@@ -8,8 +8,3 @@ object GlobalConstant {
     const val SERVICE_PROVIDER: String = "service_provider"
     const val REQUEST_MODEL_NAME: String = "request_model_name"
 }
-
-object ProviderNames {
-    const val OPEN_AI_SERVICE_PROVIDER = GlobalConstant.CHAT_MODEL_IMPL + "open_ai"
-    const val VOLCENGINE_SERVICE_PROVIDER = GlobalConstant.CHAT_MODEL_IMPL + "volcengine"
-}

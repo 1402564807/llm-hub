@@ -1,8 +1,8 @@
-package com.xermao.llmhub.provider.model
+package com.xermao.llmhub.provider.domain.model
 
-import com.xermao.llmhub.common.domain.constant.ModelType
 import com.xermao.llmhub.common.domain.model.superclass.CreatedTime
 import com.xermao.llmhub.common.domain.model.superclass.Id
+import com.xermao.llmhub.provider.domain.constant.ProviderEnum
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Serialized
@@ -10,10 +10,10 @@ import org.babyfish.jimmer.sql.Table
 import java.math.BigDecimal
 
 @Entity
-@Table(name = "llm_hub.service_provider")
-interface ServiceProvider : Id, CreatedTime {
+@Table(name = "llm_hub.provider")
+interface Provider : Id, CreatedTime {
 
-    val type: ModelType
+    val type: ProviderEnum
     val name: String
     val priority: Int
     val weight: Int

@@ -3,14 +3,14 @@ package com.xermao.llmhub.proxy.cache
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.xermao.llmhub.price.model.ModelPrice
-import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.provider.domain.model.Provider
 import org.springframework.stereotype.Component
 import java.time.Duration
 
 @Component
 class GlobalCache {
 
-    val groupCache: Cache<String, MutableMap<String, MutableList<ServiceProvider>>> = Caffeine.newBuilder()
+    val groupCache: Cache<String, MutableMap<String, MutableList<Provider>>> = Caffeine.newBuilder()
         .expireAfterAccess(Duration.ofMinutes(20))
         .expireAfterWrite(Duration.ofMinutes(20))
         .recordStats()

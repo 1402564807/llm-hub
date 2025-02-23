@@ -3,7 +3,7 @@ package com.xermao.llmhub.proxy.application
 import com.xermao.llmhub.auth.security.utils.ContextHolder
 import com.xermao.llmhub.common.domain.constant.GlobalConstant
 import com.xermao.llmhub.proxy.model.ChatRequest
-import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.provider.domain.model.Provider
 import com.xermao.llmhub.proxy.provider.ChatModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -44,7 +44,7 @@ class ChatService(
 
     private fun handle(exchange: ServerWebExchange, chatRequest: ChatRequest): Pair<WebClient.ResponseSpec, ChatModel> {
         val chatModel = exchange.attributes[GlobalConstant.CHAT_MODEL_IMPL] as ChatModel
-        val provider = exchange.attributes[GlobalConstant.SERVICE_PROVIDER] as ServiceProvider
+        val provider = exchange.attributes[GlobalConstant.SERVICE_PROVIDER] as Provider
 
         chatRequest.model = provider.modelMap.getOrElse(chatRequest.model) { chatRequest.model }
         val retrieve = webClient.post()

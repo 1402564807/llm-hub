@@ -2,11 +2,11 @@ package com.xermao.llmhub.proxy.provider.volcengine
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.xermao.llmhub.common.domain.constant.GlobalConstant.SSE_DONE_PREDICATE
-import com.xermao.llmhub.common.domain.constant.ProviderNames
 import com.xermao.llmhub.common.utils.JsonUtil
-import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.provider.domain.model.Provider
 import com.xermao.llmhub.proxy.model.ChatRequest
 import com.xermao.llmhub.proxy.model.Usage
+import com.xermao.llmhub.proxy.model.constant.ProviderImplName
 import com.xermao.llmhub.proxy.provider.ChatModel
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component
 import java.net.URI
 import java.util.function.Consumer
 
-@Component(ProviderNames.VOLCENGINE_SERVICE_PROVIDER)
+@Component(ProviderImplName.VOLCENGINE_SERVICE_PROVIDER)
 class VolcengineChatModel : ChatModel {
 
     private val log = LoggerFactory.getLogger(VolcengineChatModel::class.java)
 
-    override fun uri(provider: ServiceProvider): URI {
+    override fun uri(provider: Provider): URI {
         return URI.create("${provider.baseUrl}chat/completions")
     }
 
-    override fun headers(serverWebExchange: ServiceProvider): Consumer<HttpHeaders> {
+    override fun headers(serverWebExchange: Provider): Consumer<HttpHeaders> {
         return Consumer { httpHeaders ->
             httpHeaders.contentType = MediaType.APPLICATION_JSON
             httpHeaders.set(HttpHeaders.AUTHORIZATION, "Bearer ${serverWebExchange.key}")

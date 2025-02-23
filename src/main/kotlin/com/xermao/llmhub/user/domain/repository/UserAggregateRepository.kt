@@ -30,15 +30,13 @@ class UserAggregateRepository(
     fun fetchAggregateWithPageBy(
         fetcher: Fetcher<User>,
         userPageQueryVm: UserPageQueryVm,
-    ): Mono<Page<User>> {
+    ): Page<User> {
 
-        return mono {
-            sqlClient.createQuery(User::class) {
-                where(table.enable.`eq?`(userPageQueryVm.enable))
-                where(table.username.`eq?`(userPageQueryVm.username))
-                select(table.fetch(fetcher))
-            }.fetchPage(userPageQueryVm.pageIndex, userPageQueryVm.pageSize)
-        }
+        return sqlClient.createQuery(User::class) {
+            where(table.enable.`eq?`(userPageQueryVm.enable))
+            where(table.username.`eq?`(userPageQueryVm.username))
+            select(table.fetch(fetcher))
+        }.fetchPage(userPageQueryVm.pageIndex, userPageQueryVm.pageSize)
 
     }
 }

@@ -30,6 +30,23 @@ export const updateUser = (data: object) => {
   return http.request<ResultTable>("put", "/api/users", { data });
 };
 
+/** 获取系统管理-供应商管理列表 */
+export const getProviderList = (data?: object) => {
+  return http.request<ResultTable>("post", "/api/provider/search", { data });
+};
+
+export const addProvider = (data: object) => {
+  return http.request<ResultTable>("post", "/api/provider", { data });
+};
+
+export const updateProvider = (data: object) => {
+  return http.request<ResultTable>("put", "/api/provider", { data });
+};
+
+export const getProviders = () => {
+  return http.request<Result>("get", "/api/provider/list");
+};
+
 /** 系统管理-用户管理-获取所有角色列表 */
 export const getAllRoleList = () => {
   return http.request<Result>("get", "/list-all-role");

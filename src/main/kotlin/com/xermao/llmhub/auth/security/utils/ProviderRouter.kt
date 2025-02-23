@@ -1,14 +1,14 @@
 package com.xermao.llmhub.auth.security.utils
 
-import com.xermao.llmhub.provider.model.ServiceProvider
+import com.xermao.llmhub.provider.domain.model.Provider
 import kotlin.random.Random
 
 class ProviderRouter(
-    private val items: MutableList<ServiceProvider>,
+    private val items: MutableList<Provider>,
 ) {
 
     private val random: Random = Random
-    fun route(): ServiceProvider {
+    fun route(): Provider {
         // 按照优先级降序排序
         items.sortWith { r1, r2 ->
             r2.priority.compareTo(r1.priority)

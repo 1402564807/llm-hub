@@ -44,7 +44,6 @@ export function useUser(tableRef: Ref) {
   const avatarInfo = ref();
   const switchLoadMap = ref({});
   const { switchStyle } = usePublicHooks();
-  const higherDeptOptions = ref();
   const selectedNum = ref(0);
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -53,7 +52,6 @@ export function useUser(tableRef: Ref) {
     background: true
   });
   const form = reactive({
-    // 左侧部门树的id
     username: "",
     email: "",
     pageIndex: pagination.currentPage - 1,

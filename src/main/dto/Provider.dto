@@ -1,0 +1,25 @@
+export com.xermao.llmhub.provider.domain.model.Provider
+
+ProviderSearchView {
+    #allScalars
+    -key
+}
+
+input ProviderAddInput {
+    #allScalars
+    models
+    group
+    -id
+    -createdTime
+    -usedQuota
+}
+
+input ProviderUpdateInput {
+    #allScalars?
+    id!
+    models?
+    group?
+    -createdTime
+    -usedQuota
+    -type
+}

@@ -86,7 +86,7 @@ class AuthorizationManager(
 
             val provider = ProviderRouter(providers).route()
             val chatModel = BeanManager.getBean(
-                "${GlobalConstant.CHAT_MODEL_IMPL}${provider.type.getTitle()}",
+                "${GlobalConstant.CHAT_MODEL_IMPL}${provider.type.value}",
                 ChatModel::class.java
             )
             authorizationContext.exchange.attributes[GlobalConstant.SERVICE_PROVIDER] = provider

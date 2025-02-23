@@ -66,11 +66,11 @@ class UserDomainService(
     override fun updateUser(userUpdateInput: UserUpdateInput): Long {
         val execute = sqlClient.createUpdate(User::class) {
             where(table.id.eq(userUpdateInput.id))
-            userUpdateInput.password?.let { set(table.password, passwordEncoder.encode(userUpdateInput.password)) }
-            userUpdateInput.enable?.let { set(table.enable, userUpdateInput.enable) }
-            userUpdateInput.email?.let { set(table.email, userUpdateInput.email) }
-            userUpdateInput.allQuota?.let { set(table.allQuota, userUpdateInput.allQuota) }
-            userUpdateInput.group?.let { set(table.group, userUpdateInput.group) }
+            userUpdateInput.password?.let { set(table.password, passwordEncoder.encode(it)) }
+            userUpdateInput.enable?.let { set(table.enable, it) }
+            userUpdateInput.email?.let { set(table.email, it) }
+            userUpdateInput.allQuota?.let { set(table.allQuota, it) }
+            userUpdateInput.group?.let { set(table.group, it) }
         }.execute()
         return execute.toLong()
     }
