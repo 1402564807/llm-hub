@@ -30,6 +30,10 @@ export const updateUser = (data: object) => {
   return http.request<ResultTable>("put", "/api/users", { data });
 };
 
+export const removeUser = (data: string) => {
+  return http.request<ResultTable>("delete", `/api/users/${data}`);
+};
+
 /** 获取系统管理-供应商管理列表 */
 export const getProviderList = (data?: object) => {
   return http.request<ResultTable>("post", "/api/provider/search", { data });
@@ -41,6 +45,10 @@ export const addProvider = (data: object) => {
 
 export const updateProvider = (data: object) => {
   return http.request<ResultTable>("put", "/api/provider", { data });
+};
+
+export const removeProvider = (data: string) => {
+  return http.request<ResultTable>("delete", `/api/provider/${data}`);
 };
 
 export const getProviders = () => {

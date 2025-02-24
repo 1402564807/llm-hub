@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @EnableScheduling
 @SpringBootApplication
-class LlmHubApplication
+class Application
 
 fun main(args: Array<String>) {
-    runApplication<LlmHubApplication>(*args)
+    runApplication<Application>(*args)
 }

@@ -23,11 +23,12 @@ interface Provider : Id, CreatedTime {
     @Column(sqlElementType = "varchar")
     val models: List<String>
 
-    @Column(sqlElementType = "varchar")
+    @Column(name = "\"group\"", sqlElementType = "varchar")
     val group: List<String>
     val usedQuota: BigDecimal
 
     @Serialized
     val modelMap: Map<String, String>
+
     val status: Boolean
 }

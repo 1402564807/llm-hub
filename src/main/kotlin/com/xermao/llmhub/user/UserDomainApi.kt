@@ -13,4 +13,5 @@ interface UserDomainApi {
     fun addUser(userAddInput: UserAddInput): Long
 
     fun updateUser(userUpdateInput: UserUpdateInput): Long
+    fun deleteUser(id: Long): Boolean
 }

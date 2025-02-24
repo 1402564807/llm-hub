@@ -8,6 +8,8 @@ import com.xermao.llmhub.provider.domain.model.by
 import com.xermao.llmhub.provider.domain.model.dto.ProviderAddInput
 import com.xermao.llmhub.provider.domain.model.dto.ProviderUpdateInput
 import com.xermao.llmhub.provider.domain.repository.ProviderAggregateRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.babyfish.jimmer.Page
 import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.web.bind.annotation.*
@@ -36,13 +38,25 @@ class ProviderController(
 
     @PostMapping
     suspend fun addProvider(@RequestBody providerAddInput: ProviderAddInput): R<Long> {
-        val provider = providerAppService.addProvider(providerAddInput)
+        val provider = withContext(Dispatchers.IO) {
+            providerAppService.addProvider(providerAddInput)
+        }
         return R.success(provider)
     }
 
     @PutMapping
     suspend fun updateProvider(@RequestBody providerUpdateInput: ProviderUpdateInput): R<Long> {
-        val provider = providerAppService.updateProvider(providerUpdateInput)
+        val provider = withContext(Dispatchers.IO) {
+            providerAppService.updateProvider(providerUpdateInput)
+        }
+        return R.success(provider)
+    }
+
+    @DeleteMapping("/{id}")
+    suspend fun deleteProvider(@PathVariable("id") id: Long): R<Boolean> {
+        val provider = withContext(Dispatchers.IO) {
+            providerAppService.deleteProvider(id)
+        }
         return R.success(provider)
     }
 

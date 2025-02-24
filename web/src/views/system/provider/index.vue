@@ -27,6 +27,7 @@ const {
   resetForm,
   openDialog,
   handleDelete,
+
   handleSizeChange,
   handleCurrentChange
 } = useProvider(tableRef);

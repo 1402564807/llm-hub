@@ -7,7 +7,7 @@ import com.xermao.llmhub.proxy.cache.GlobalCache
 import com.xermao.llmhub.common.domain.constant.GlobalConstant
 import com.xermao.llmhub.common.utils.BeanManager
 import com.xermao.llmhub.common.utils.JsonUtil
-import com.xermao.llmhub.proxy.provider.ChatModel
+import com.xermao.llmhub.proxy.application.ChatModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.buffer.DataBufferUtils

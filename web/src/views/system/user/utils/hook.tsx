@@ -16,7 +16,13 @@ import {
   hideTextAtIndex,
   isAllEmpty
 } from "@pureadmin/utils";
-import { addUser, getRoleIds, getUserList, updateUser } from "@/api/system";
+import {
+  addUser,
+  getRoleIds,
+  getUserList,
+  removeUser,
+  updateUser
+} from "@/api/system";
 import {
   ElForm,
   ElFormItem,
@@ -212,16 +218,31 @@ export function useUser(tableRef: Ref) {
   }
 
   function handleDelete(row) {
-    message(`您删除了用户编号为${row.id}的这条数据`, { type: "success" });
-    onSearch();
+    loading.value = true;
+    removeUser(row.id)
+      .then(({ success }) => {
+        if (success) {
+          message(`您删除了用户编号为${row.id}的这条数据`, { type: "success" });
+          onSearch().then();
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          loading.value = false;
+        }, 500);
+      });
   }
 
   function handleSizeChange(val: number) {
     console.log(`${val} items per page`);
+    pagination.pageSize = val;
+    onSearch().then();
   }
 
   function handleCurrentChange(val: number) {
     console.log(`current page: ${val}`);
+    pagination.currentPage = val;
+    onSearch().then();
   }
 
   /** 当CheckBox选择项发生变化时会触发该事件 */

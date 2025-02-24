@@ -1,10 +1,10 @@
-package com.xermao.llmhub.proxy.application
+package com.xermao.llmhub.proxy.domain.service
 
 import com.xermao.llmhub.auth.security.utils.ContextHolder
 import com.xermao.llmhub.common.domain.constant.GlobalConstant
-import com.xermao.llmhub.proxy.model.ChatRequest
 import com.xermao.llmhub.provider.domain.model.Provider
-import com.xermao.llmhub.proxy.provider.ChatModel
+import com.xermao.llmhub.proxy.application.ChatModel
+import com.xermao.llmhub.proxy.domain.model.ChatRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch

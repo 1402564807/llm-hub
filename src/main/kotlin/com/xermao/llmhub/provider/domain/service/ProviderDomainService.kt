@@ -5,6 +5,7 @@ import com.xermao.llmhub.provider.domain.model.*
 import com.xermao.llmhub.provider.domain.model.dto.ProviderAddInput
 import com.xermao.llmhub.provider.domain.model.dto.ProviderUpdateInput
 import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.KExpression
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
 
@@ -30,5 +31,10 @@ class ProviderDomainService(private val sqlClient: KSqlClient) : ProviderDomainA
             providerUpdateInput.status?.let { set(table.status, it) }
         }.execute()
         return execute.toLong()
+    }
+
+    override fun deleteProvider(id: Long): Boolean {
+        val result = sqlClient.deleteById(Provider::class, id)
+        return result.totalAffectedRowCount != 0
     }
 }

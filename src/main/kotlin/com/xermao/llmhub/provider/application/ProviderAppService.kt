@@ -22,4 +22,8 @@ class ProviderAppService(
         return providerDomainApi.updateProvider(providerUpdateInput)
     }
 
+    @Transactional(rollbackFor = [Throwable::class])
+    override fun deleteProvider(id: Long): Boolean {
+        return providerDomainApi.deleteProvider(id)
+    }
 }

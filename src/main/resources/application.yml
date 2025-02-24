@@ -40,13 +40,9 @@ jwt:
   expiration-min: ${JWT_EXPIRATION_MIN:1440}
   expiration-max: ${JWT_EXPIRATION_MIN:10080}
 
-cors:
-  allowedOrigins: ${ALLOWED_ORIGINS}
-  allowedMethods: ${ALLOWED_METHODS}
-  allowedHeaders: ${ALLOWED_HEADERS}
-
 jimmer:
   language: kotlin
   show-sql: true
   pretty-sql: true
   inline-sql-variables: true
+  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect

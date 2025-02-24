@@ -75,5 +75,9 @@ class UserDomainService(
         return execute.toLong()
     }
 
+    override fun deleteUser(id: Long): Boolean {
+        val result = sqlClient.deleteById(User::class, id)
+        return result.totalAffectedRowCount != 0
+    }
 
 }

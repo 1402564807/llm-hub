@@ -84,7 +84,11 @@ defineExpose({ getRef });
       </re-col>
 
       <re-col :value="24" :xs="24" :sm="24">
-        <el-form-item label="密钥" prop="key">
+        <el-form-item
+          label="密钥"
+          prop="key"
+          :required="newFormInline.title === '新增'"
+        >
           <el-input
             v-model="newFormInline.key"
             clearable

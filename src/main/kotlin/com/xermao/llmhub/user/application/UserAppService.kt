@@ -7,7 +7,6 @@ import com.xermao.llmhub.user.domain.model.dto.UserUpdateInput
 import com.xermao.llmhub.user.domain.service.UserDomainService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import reactor.core.publisher.Mono
 
 @Service
 class UserAppService(
@@ -21,12 +20,17 @@ class UserAppService(
     }
 
     @Transactional(rollbackFor = [Throwable::class])
-    override fun addUser(userAddInput: UserAddInput): Mono<Long> {
-        return Mono.just(userDomainService.addUser(userAddInput))
+    override fun addUser(userAddInput: UserAddInput): Long {
+        return userDomainService.addUser(userAddInput)
     }
 
     @Transactional(rollbackFor = [Throwable::class])
-    override fun updateUser(userUpdateInput: UserUpdateInput): Mono<Long> {
-        return Mono.just(userDomainService.updateUser(userUpdateInput))
+    override fun updateUser(userUpdateInput: UserUpdateInput): Long {
+        return userDomainService.updateUser(userUpdateInput)
+    }
+
+    @Transactional(rollbackFor = [Throwable::class])
+    override fun deleteUser(id: Long): Boolean {
+        return userDomainService.deleteUser(id)
     }
 }

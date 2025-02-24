@@ -7,6 +7,7 @@ import {
   addProvider,
   getProviderList,
   getProviders,
+  removeProvider,
   updateProvider
 } from "@/api/system";
 import { addDialog } from "@/components/ReDialog/index";
@@ -14,6 +15,7 @@ import { deviceDetection } from "@pureadmin/utils";
 import editForm from "@/views/system/provider/form/index.vue";
 import { message } from "@/utils/message";
 import type { FormItemProps } from "@/views/system/provider/utils/types";
+import { ElMessageBox, ElTag } from "element-plus";
 
 export function useProvider(tableRef: Ref) {
   const formRef = ref();
@@ -65,12 +67,23 @@ export function useProvider(tableRef: Ref) {
     {
       label: "供应商",
       prop: "type",
-      minWidth: 130
+      minWidth: 130,
+      cellRenderer: ({ row }) => (
+        <ElTag round>
+          {providers.value.findLast(it => it.key === row.type).label}
+        </ElTag>
+      )
     },
     {
       label: "分组",
       prop: "group",
-      minWidth: 100
+      minWidth: 100,
+      cellRenderer: ({ row }) =>
+        row.group.map((it: string) => (
+          <ElTag type="info" round>
+            {it}
+          </ElTag>
+        ))
     },
     {
       label: "已用额度",
@@ -119,7 +132,54 @@ export function useProvider(tableRef: Ref) {
     }
   ];
 
-  const onChange = row => {};
+  const onChange = ({ row, index }) => {
+    ElMessageBox.confirm(
+      `确认要<strong>${
+        row.status ? "启用" : "停用"
+      }</strong><strong style='color:var(--el-color-primary)'>${
+        row.name
+      }</strong>服务商吗?`,
+      "系统提示",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        dangerouslyUseHTMLString: true,
+        draggable: true
+      }
+    )
+      .then(() => {
+        switchLoadMap.value[index] = Object.assign(
+          {},
+          switchLoadMap.value[index],
+          {
+            loading: true
+          }
+        );
+        updateProvider({
+          id: row.id,
+          status: row.status
+        }).then(({ success }) => {
+          if (success) {
+            setTimeout(() => {
+              switchLoadMap.value[index] = Object.assign(
+                {},
+                switchLoadMap.value[index],
+                {
+                  loading: false
+                }
+              );
+              message("已成功修改状态", {
+                type: "success"
+              });
+            }, 300);
+          }
+        });
+      })
+      .catch(() => {
+        row.status === 0 ? (row.status = 1) : (row.status = 0);
+      });
+  };
 
   const onSearch = async () => {
     loading.value = true;
@@ -141,16 +201,31 @@ export function useProvider(tableRef: Ref) {
   };
 
   function handleDelete(row) {
-    message(`您删除了用户编号为${row.id}的这条数据`, { type: "success" });
-    onSearch().then();
+    loading.value = true;
+    removeProvider(row.id)
+      .then(({ success }) => {
+        if (success) {
+          message(`您删除了编号为${row.id}的这条数据`, { type: "success" });
+          onSearch().then();
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          loading.value = false;
+        }, 500);
+      });
   }
 
   function handleSizeChange(val: number) {
     console.log(`${val} items per page`);
+    pagination.pageSize = val;
+    onSearch().then();
   }
 
   function handleCurrentChange(val: number) {
     console.log(`current page: ${val}`);
+    pagination.currentPage = val;
+    onSearch().then();
   }
 
   function openDialog(title = "新增", row?: FormItemProps) {
@@ -211,6 +286,7 @@ export function useProvider(tableRef: Ref) {
             for (let domain of curData.domains) {
               modelMap[domain.value] = domain.target;
             }
+            curData.modelMap = modelMap;
             if (title === "新增") {
               addProvider(curData).then(({ success }) => {
                 if (success) {

@@ -1,7 +1,7 @@
 package com.xermao.llmhub.proxy.web
 
-import com.xermao.llmhub.proxy.model.ChatRequest
-import com.xermao.llmhub.proxy.application.ChatService
+import com.xermao.llmhub.proxy.domain.model.ChatRequest
+import com.xermao.llmhub.proxy.domain.service.ChatService
 import org.reactivestreams.Publisher
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

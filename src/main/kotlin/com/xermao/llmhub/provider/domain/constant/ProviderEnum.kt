@@ -1,10 +1,12 @@
 package com.xermao.llmhub.provider.domain.constant
 
+import com.fasterxml.jackson.annotation.JsonValue
 import org.babyfish.jimmer.sql.EnumItem
 import org.babyfish.jimmer.sql.EnumType
 
 @EnumType(EnumType.Strategy.ORDINAL)
 enum class ProviderEnum(
+    @JsonValue
     val key: Int,
     val value: String,
     val label: String,
@@ -23,4 +25,6 @@ enum class ProviderEnum(
 
     @EnumItem(ordinal = 4)
     AZURE_OPEN_AI(4, ProviderName.AZURE_OPENAI, "AzureOpenAI"), ;
+
+
 }
